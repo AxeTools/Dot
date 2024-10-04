@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zlib1g-dev \
     libxml2-dev \
     libzip-dev \
+    unzip \
   && docker-php-ext-install \
     zip \
     intl \

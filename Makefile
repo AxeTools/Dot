@@ -16,7 +16,7 @@
 #
 up:
 	@echo "##### Bringing up Dev Containers #####"
-	@(docker compose up -d)
+	@(docker compose up -d --remove-orphans)
 
 #
 # Bring down the dev containers
@@ -30,33 +30,33 @@ down:
 #
 bash: up
 	@echo "##### Dev php Container Bash Prompt #####"
-	@(docker compose exec php bash)
+	@(docker compose exec php56 bash)
 
 #
 # Execute tests against the dev php container
 #
 tests: up
 	@echo "##### Dev php Container Tests #####"
-	@(docker compose exec php composer tests)
+	@(docker compose exec php56 composer tests)
 
 
 coverage: up
 	@echo "##### Dev php Container Coverage #####"
-	@(docker compose exec php composer phpunit-coverage)
+	@(docker compose exec php56 composer phpunit-coverage)
 
 #
 # Install the composer assets
 #
 install: up
 	@echo "##### Installing Composer Dependencies #####"
-	@(docker compose exec php composer install)
+	@(docker compose exec php56 composer update)
 
 #
 # Build the dev docker file
 #
 build:
 	@echo "##### Building Production Containers #####"
-	@docker compose build php
+	@docker compose build php56
 
 #
 # build and bring up the dev containers and install assets

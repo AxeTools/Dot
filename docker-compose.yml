@@ -1,6 +1,6 @@
 
 services:
-  php:
+  php56:
     build:
       context: .
       dockerfile: Dockerfile

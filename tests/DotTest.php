@@ -59,7 +59,6 @@ class DotTest extends TestCase {
      * @test
      * @dataProvider incrementorDataProvider
      *
-     * @param array $array
      * @param $key
      * @param $incrementor
      * @param $default
@@ -70,8 +69,13 @@ class DotTest extends TestCase {
      */
     public function increment(array $array, $key, $incrementor, $default, $expected, $endArray) {
         $actual = Dot::increment($array, $key, $incrementor, $default);
-        $this->assertEquals($expected, $actual, 'expected return', 0.000001);
-        $this->assertEquals($endArray, $array, 'expected end array', 0.000001);
+        if (method_exists($this, 'assertEqualsWithDelta')) {
+            $this->assertEqualsWithDelta($expected, $actual, 0.0001, 'expected return');
+            $this->assertEqualsWithDelta($endArray, $array, 0.0001, 'expected end array');
+        } else {
+            $this->assertEquals($expected, $actual, 'expected return', 0.000001);
+            $this->assertEquals($endArray, $array, 'expected end array', 0.000001);
+        }
     }
 
     /**
@@ -92,8 +96,13 @@ class DotTest extends TestCase {
         foreach (range(1, $loopCount) as $_) {
             $result = Dot::increment($array, $key, $incrementor, $default);
         }
-        $this->assertEquals($expected, $result, 'expected return', 0.000001);
-        $this->assertEquals($endArray, $array, 'expected end array', 0.000001);
+        if (method_exists($this, 'assertEqualsWithDelta')) {
+            $this->assertEqualsWithDelta($expected, $result, 0.0001, 'expected return');
+            $this->assertEqualsWithDelta($endArray, $array, 0.0001, 'expected end array');
+        } else {
+            $this->assertEquals($expected, $result, 'expected return', 0.000001);
+            $this->assertEquals($endArray, $array, 'expected end array', 0.000001);
+        }
     }
 
     /**

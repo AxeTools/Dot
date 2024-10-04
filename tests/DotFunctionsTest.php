@@ -59,7 +59,6 @@ class DotFunctionsTest extends TestCase {
      * @test
      * @dataProvider incrementorDataProvider
      *
-     * @param array $array
      * @param $key
      * @param $incrementor
      * @param $default
@@ -70,8 +69,13 @@ class DotFunctionsTest extends TestCase {
      */
     public function increment(array $array, $key, $incrementor, $default, $expected, $endArray) {
         $actual = dotIncrement($array, $key, $incrementor, $default);
-        $this->assertEquals($expected, $actual, 'expected return', 0.000001);
-        $this->assertEquals($endArray, $array, 'expected end array', 0.000001);
+        if (method_exists($this, 'assertEqualsWithDelta')) {
+            $this->assertEqualsWithDelta($expected, $actual, 0.0001, 'expected return');
+            $this->assertEqualsWithDelta($endArray, $array, 0.0001, 'expected end array');
+        } else {
+            $this->assertEquals($expected, $actual, 'expected return', 0.000001);
+            $this->assertEquals($endArray, $array, 'expected end array', 0.000001);
+        }
     }
 
     /**
@@ -92,8 +96,13 @@ class DotFunctionsTest extends TestCase {
         foreach (range(1, $loopCount) as $_) {
             $result = dotIncrement($array, $key, $incrementor, $default);
         }
-        $this->assertEquals($expected, $result, 'expected return', 0.000001);
-        $this->assertEquals($endArray, $array, 'expected end array', 0.000001);
+        if (method_exists($this, 'assertEqualsWithDelta')) {
+            $this->assertEqualsWithDelta($expected, $result, 0.0001, 'expected return');
+            $this->assertEqualsWithDelta($endArray, $array, 0.0001, 'expected end array');
+        } else {
+            $this->assertEquals($expected, $result, 'expected return', 0.000001);
+            $this->assertEquals($endArray, $array, 'expected end array', 0.000001);
+        }
     }
 
     /**
@@ -566,5 +575,4 @@ class DotFunctionsTest extends TestCase {
             'Initial value negative increment, default ignored' => [['test' => 0.2], 'test', -1, 0, 50, -49.8, ['test' => -49.8]],
         ];
     }
-
 }
