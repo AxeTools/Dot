@@ -69,6 +69,7 @@ class DotTest extends TestCase {
      */
     public function increment(array $array, $key, $incrementor, $default, $expected, $endArray) {
         $actual = Dot::increment($array, $key, $incrementor, $default);
+        /* transitional workaround for phpunit on php ^7.1 || ^8.0 */
         if (method_exists($this, 'assertEqualsWithDelta')) {
             $this->assertEqualsWithDelta($expected, $actual, 0.0001, 'expected return');
             $this->assertEqualsWithDelta($endArray, $array, 0.0001, 'expected end array');
@@ -96,6 +97,7 @@ class DotTest extends TestCase {
         foreach (range(1, $loopCount) as $_) {
             $result = Dot::increment($array, $key, $incrementor, $default);
         }
+        /* transitional workaround for phpunit on php ^7.1 || ^8.0 */
         if (method_exists($this, 'assertEqualsWithDelta')) {
             $this->assertEqualsWithDelta($expected, $result, 0.0001, 'expected return');
             $this->assertEqualsWithDelta($endArray, $array, 0.0001, 'expected end array');
