@@ -123,7 +123,7 @@ final class Dot {
     public static function increment(array &$array, $key, $incrementor = 1, $default = 0, $delimiter = self::DEFAULT_DELIMITER) {
         self::validateDelimiter($delimiter);
         if (!is_numeric($incrementor)) {
-            throw new InvalidArgumentException("The provided incrementor '{$incrementor}' is not a numeric value");
+            throw new InvalidArgumentException("The provided incrementor is not a numeric value");
         }
         $initial_value = self::get($array, $key, $default, $delimiter);
         if (!is_numeric($initial_value)) {
