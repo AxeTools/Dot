@@ -29,7 +29,7 @@ final class Dot {
      *
      * @return array|mixed|null
      *
-     *@throws InvalidArgumentException if an invalid delimiter is used
+     * @throws InvalidArgumentException if an invalid delimiter is used
      *
      * @since 1.0.0
      */
@@ -64,7 +64,7 @@ final class Dot {
      *
      * @return void
      *
-     *@throws InvalidArgumentException if an invalid delimiter is used
+     * @throws InvalidArgumentException if an invalid delimiter is used
      *
      * @since 1.0.0
      */

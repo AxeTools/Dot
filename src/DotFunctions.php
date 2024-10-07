@@ -17,7 +17,7 @@ use AxeTools\Utilities\Dot\Dot;
  *
  * @return array|mixed|null
  *
- *@throws InvalidArgumentException if an invalid delimiter is used
+ * @throws InvalidArgumentException if an invalid delimiter is used
  *
  * @since 1.0.0
  */
@@ -38,7 +38,7 @@ function dotGet(
  *
  * @return void
  *
- *@throws InvalidArgumentException if an invalid delimiter is used
+ * @throws InvalidArgumentException if an invalid delimiter is used
  *
  * @since 1.0.0
  */
