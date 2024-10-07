@@ -107,6 +107,21 @@ class DotTest extends TestCase {
 
     /**
      * @test
+     * @dataProvider incrementInvalidConditionDataProvider
+     *
+     * @param mixed $incrementor
+     * @param mixed $default
+     *
+     * @return void
+     */
+    public function incrementInvalidConditions($incrementor, $default) {
+        $this->expectException(InvalidArgumentException::class);
+        $array = [];
+        Dot::increment($array, 'test', $incrementor, $default);
+    }
+
+    /**
+     * @test
      * @dataProvider dotCountDataProvider
      *
      * @param mixed[]          $test
@@ -573,6 +588,18 @@ class DotTest extends TestCase {
             'No initial value negative increment, non 0 default' => [[], 'test', -1.1, 1, 50, -54, ['test' => -54]],
             'Initial value positive increment, default ignored' => [['test' => 0.2], 'test', 1, 0, 50, 50.2, ['test' => 50.2]],
             'Initial value negative increment, default ignored' => [['test' => 0.2], 'test', -1, 0, 50, -49.8, ['test' => -49.8]],
+        ];
+    }
+
+    public static function incrementInvalidConditionDataProvider() {
+        return [
+            'invalid string incrementor, positive default' => ['things', 1],
+            'invalid array incrementor, positive default' => [[], 1],
+            'invalid null incrementor, positive default' => [null, 1],
+            'valid incrementor, invalid string default' => [1, 'things'],
+            'valid incrementor, invalid array default' => [1, []],
+            'valid incrementor, invalid null default' => [1, null],
+            'invalid incrementor, invalid default' => [null, null],
         ];
     }
 }

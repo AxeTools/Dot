@@ -281,9 +281,42 @@ array (
 
 ### `Dot::increment()`
 
+The `Dot::increment()` method will increment a value inside the provided array at the location of the key provided.
+If the location already contains a numeric value it will be incremented by the increment amount.  If the location is
+not defined in the array the default will be uses as an initial value to be incremented by.
+
 There is a globally available `dotIncement()` function, that wraps the `Dot::increment()` static method included in the
 autoloader.
 
+#### Description
+```
+Dot::increment(array &$incrementArray, string $incrementKey, int|float $incrment = 1, int|float $default = 0, string $delimiter = '.'): int|float
+```
+
+#### Parameters
+<dl>
+<dt>incrementArray</dt>
+<dd>The array that will the value will be incremented inside the array in the position of the incrementKey.</dd>
+
+<dt>incrementKey</dt>
+<dd>The delimited key that will be searched for in the provided incrementArray.  If the array does not have string
+keys number strings can be used instead to access the appropriate position in the array</dd>
+
+<dt>increment</dt>
+<dd>The amount to increment the value by.  This can be positive or negative numeric values, either integers or
+floats.</dd>
+
+<dt>default</dt>
+<dd>The default value to return if the incrementKey is not found in the incrementArray</dd>
+
+<dt>delimiter</dt>
+<dd>The key delimiter can be specified, this is needed when there are '.' values contained within the expected
+array keys already</dd>
+</dl>
+
+#### Return Value
+
+#### Examples
 
 ### `Dot::append()`
 

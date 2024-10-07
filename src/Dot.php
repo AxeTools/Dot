@@ -7,7 +7,7 @@ use InvalidArgumentException;
 /**
  * Get and set and check values in an array using dot notation or any other optional key separator.
  */
-class Dot {
+final class Dot {
     const DEFAULT_DELIMITER = '.';
 
     const ZERO_ON_NON_ARRAY = 1;
@@ -23,11 +23,13 @@ class Dot {
      * Return the value that the array has for the dot notation key, if there is no value to return the default is returned.
      *
      * @param mixed[]          $array
-     * @param non-empty-string $key
-     * @param mixed|null       $default
-     * @param non-empty-string $delimiter
+     * @param non-empty-string $key       a string representation of a nested key value delimited by '.' or the passed delimiters
+     * @param mixed|null       $default   optional, the default value to return if there is no value set in the key position of the array
+     * @param non-empty-string $delimiter optional, the delimiter used in the string key to break apart the key values
      *
      * @throws InvalidArgumentException if an invalid delimiter is used
+     *
+     * @since 1.0.0
      *
      * @return array|mixed|null
      */
@@ -56,11 +58,13 @@ class Dot {
      * created in the array.
      *
      * @param mixed[]          $array
-     * @param non-empty-string $key
-     * @param array|mixed|null $value
-     * @param non-empty-string $delimiter
+     * @param non-empty-string $key       a string representation of a nested key value delimited by '.' or the passed delimiters
+     * @param array|mixed|null $value     The value to set in the array at the passed key location
+     * @param non-empty-string $delimiter optional, the delimiter used in the string key to break apart the key values
      *
      * @throws InvalidArgumentException if an invalid delimiter is used
+     *
+     * @since 1.0.0
      *
      * @return void
      */
@@ -83,10 +87,12 @@ class Dot {
      * Does the array have the passed dot notation key.
      *
      * @param mixed[]          $array
-     * @param non-empty-string $key       Dot notation key
-     * @param non-empty-string $delimiter
+     * @param non-empty-string $key       a string representation of a nested key value delimited by '.' or the passed delimiters
+     * @param non-empty-string $delimiter optional, the delimiter used in the string key to break apart the key values
      *
      * @throws InvalidArgumentException if an invalid delimiter is used
+     *
+     * @since 1.0.0
      *
      * @return bool
      */
@@ -99,27 +105,29 @@ class Dot {
 
     /**
      * Increment the value at the provided key position by the value passed in the incrementor (can be negative).  If
-     * there is no value in the provided key position then the default value is used as an initializer (starting count)
+     * there is no value in the provided key position then the initial value is used as an initializer (starting count)
      * for the value.
      *
      * @param mixed[]          $array
-     * @param non-empty-string $key
-     * @param int|float        $incrementor
-     * @param int|float        $default
-     * @param non-empty-string $delimiter
-     *
-     * @throws InvalidArgumentException if the value in the key position is not a numeric value
+     * @param non-empty-string $key         a string representation of a nested key value delimited by '.' or the passed delimiters
+     * @param int|float        $incrementor optional, incrementing amount, defaults to +1
+     * @param int|float        $default     optional, default amount if the key location has no initial value
+     * @param non-empty-string $delimiter   optional, the delimiter used in the string key to break apart the key values
      *
      * @return int return the value in the key position after it has been incremented
+     *
+     * @since 1.0.0
+     *
+     * @throws InvalidArgumentException if the value in the key position is not a numeric value
      */
-    public static function increment(array &$array, $key, $incrementor, $default = 0, $delimiter = self::DEFAULT_DELIMITER) {
+    public static function increment(array &$array, $key, $incrementor = 1, $default = 0, $delimiter = self::DEFAULT_DELIMITER) {
         self::validateDelimiter($delimiter);
         if (!is_numeric($incrementor)) {
-            throw new InvalidArgumentException("${key} value is not a numeric value");
+            throw new InvalidArgumentException("The provided incrementor '{$incrementor}' is not a numeric value");
         }
         $initial_value = self::get($array, $key, $default, $delimiter);
         if (!is_numeric($initial_value)) {
-            throw new InvalidArgumentException("${key} value is not a numeric value");
+            throw new InvalidArgumentException("The value at the key position '{$key}' is not a numeric value");
         }
         self::set($array, $key,
             $initial_value + $incrementor, $delimiter);
@@ -134,11 +142,13 @@ class Dot {
      * key position is not an array.
      *
      * @param mixed[]          $array
-     * @param non-empty-string $key
-     * @param non-empty-string $delimiter
+     * @param non-empty-string $key       a string representation of a nested key value delimited by '.' or the passed delimiters
+     * @param non-empty-string $delimiter optional, the delimiter used in the string key to break apart the key values
      * @param int              $return    defaults to returning 0 count on not set or not array, can be set to return -1
      *
      * @throws InvalidArgumentException if an invalid delimiter is used
+     *
+     * @since 1.0.0
      *
      * @return int
      */
@@ -156,11 +166,13 @@ class Dot {
      * containing the value submitted.
      *
      * @param mixed[]          $array
-     * @param non-empty-string $key
+     * @param non-empty-string $key       a string representation of a nested key value delimited by '.' or the passed delimiters
      * @param array|mixed|null $value
-     * @param non-empty-string $delimiter
+     * @param non-empty-string $delimiter optional, the delimiter used in the string key to break apart the key values
      *
      * @throws InvalidArgumentException if an invalid deliminator is used
+     *
+     * @since 1.0.0
      *
      * @return void
      */
@@ -176,8 +188,10 @@ class Dot {
      * Unset the provided key position in the array if it exists.
      *
      * @param mixed[]          $array
-     * @param non-empty-string $key
-     * @param non-empty-string $delimiter
+     * @param non-empty-string $key       a string representation of a nested key value delimited by '.' or the passed delimiters
+     * @param non-empty-string $delimiter optional, the delimiter used in the string key to break apart the key values
+     *
+     * @since 1.0.0
      *
      * @return void
      */
@@ -204,10 +218,12 @@ class Dot {
      * Flatten a multidimensional array to a single dimension with dot keys => value.
      *
      * @param mixed[]          $array     The source array to flatten
-     * @param non-empty-string $delimiter The delimiter to use between keys
+     * @param non-empty-string $delimiter optional, the delimiter used in the string key to break apart the key values
      * @param string           $prepend   if there is any prepend string to the key sequence to use
      *
      * @throws InvalidArgumentException if an invalid delimiter is used
+     *
+     * @since 1.0.0
      *
      * @return array<string, mixed> flattened single dimension array of the source array
      */
@@ -232,6 +248,8 @@ class Dot {
      *
      * @throws InvalidArgumentException if an invalid delimiter is used
      *
+     * @since 1.0.0
+     *
      * @return void
      */
     private static function validateDelimiter($delimiter) {
@@ -252,6 +270,8 @@ class Dot {
      * @param string $message
      *
      * @throws InvalidArgumentException
+     *
+     * @since 1.0.0
      *
      * @return void
      */
