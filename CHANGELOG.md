@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning].
 * `Dot::append()` for adding/creating array lists at a given key location
 * `Dot::delete()` for unsetting data at a given key location
 * `Dot::count()` for getting array counts at a given key location
-* `DotFunctions.php` has been added and included in the autoload to make wrapper function available globally
+* `DotFunctions.php` included in the autoload to make wrapper function available globally
   * `dotGet()` to wrap `Dot::Get()` static method
   * `dotSet()` to wrap `Dot::Set()` static method
   * `dotHas()` to wrap `Dot::Has()` static method

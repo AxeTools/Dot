@@ -22,31 +22,31 @@ final class Dot {
     /**
      * Return the value that the array has for the dot notation key, if there is no value to return the default is returned.
      *
-     * @param mixed[]          $array
-     * @param non-empty-string $key       a string representation of a nested key value delimited by '.' or the passed delimiters
-     * @param mixed|null       $default   optional, the default value to return if there is no value set in the key position of the array
-     * @param non-empty-string $delimiter optional, the delimiter used in the string key to break apart the key values
-     *
-     * @throws InvalidArgumentException if an invalid delimiter is used
-     *
-     * @since 1.0.0
+     * @param mixed[]          $searchArray
+     * @param non-empty-string $searchKey   a string representation of a nested key value delimited by '.' or the passed delimiters
+     * @param mixed|null       $default     optional, the default value to return if there is no value set in the key position of the array
+     * @param non-empty-string $delimiter   optional, the delimiter used in the string key to break apart the key values
      *
      * @return array|mixed|null
+     *
+     *@throws InvalidArgumentException if an invalid delimiter is used
+     *
+     * @since 1.0.0
      */
-    public static function get(array $array, $key, $default = null, $delimiter = self::DEFAULT_DELIMITER) {
+    public static function get(array $searchArray, $searchKey, $default = null, $delimiter = self::DEFAULT_DELIMITER) {
         self::validateDelimiter($delimiter);
-        $keys = explode($delimiter, $key);
+        $keys = explode($delimiter, $searchKey);
         $key_pos = array_shift($keys);
 
-        if (array_key_exists($key_pos, $array)) {
-            if (is_array($array[$key_pos]) && count($keys)) {
-                return self::get($array[$key_pos], implode($delimiter, $keys), $default, $delimiter);
+        if (array_key_exists($key_pos, $searchArray)) {
+            if (is_array($searchArray[$key_pos]) && count($keys)) {
+                return self::get($searchArray[$key_pos], implode($delimiter, $keys), $default, $delimiter);
             } else {
                 if (count($keys)) {
                     return $default;
                 }
 
-                return $array[$key_pos];
+                return $searchArray[$key_pos];
             }
         } else {
             return $default;
@@ -57,48 +57,48 @@ final class Dot {
      * Set the value in the array dictated by the dot notation key, if the path of the key does not exist it will be
      * created in the array.
      *
-     * @param mixed[]          $array
-     * @param non-empty-string $key       a string representation of a nested key value delimited by '.' or the passed delimiters
+     * @param mixed[]          $setArray
+     * @param non-empty-string $setKey    a string representation of a nested key value delimited by '.' or the passed delimiters
      * @param array|mixed|null $value     The value to set in the array at the passed key location
      * @param non-empty-string $delimiter optional, the delimiter used in the string key to break apart the key values
      *
-     * @throws InvalidArgumentException if an invalid delimiter is used
+     * @return void
+     *
+     *@throws InvalidArgumentException if an invalid delimiter is used
      *
      * @since 1.0.0
-     *
-     * @return void
      */
-    public static function set(array &$array, $key, $value, $delimiter = self::DEFAULT_DELIMITER) {
+    public static function set(array &$setArray, $setKey, $value, $delimiter = self::DEFAULT_DELIMITER) {
         self::validateDelimiter($delimiter);
-        $keys = explode($delimiter, $key);
+        $keys = explode($delimiter, $setKey);
         $key_pos = array_shift($keys);
 
         if (count($keys)) {
-            if (!array_key_exists($key_pos, $array) || !is_array($array[$key_pos])) {
-                $array[$key_pos] = [];
+            if (!array_key_exists($key_pos, $setArray) || !is_array($setArray[$key_pos])) {
+                $setArray[$key_pos] = [];
             }
-            self::set($array[$key_pos], implode($delimiter, $keys), $value, $delimiter);
+            self::set($setArray[$key_pos], implode($delimiter, $keys), $value, $delimiter);
         } else {
-            $array[$key_pos] = $value;
+            $setArray[$key_pos] = $value;
         }
     }
 
     /**
      * Does the array have the passed dot notation key.
      *
-     * @param mixed[]          $array
-     * @param non-empty-string $key       a string representation of a nested key value delimited by '.' or the passed delimiters
-     * @param non-empty-string $delimiter optional, the delimiter used in the string key to break apart the key values
+     * @param mixed[]          $searchArray
+     * @param non-empty-string $searchKey   a string representation of a nested key value delimited by '.' or the passed delimiters
+     * @param non-empty-string $delimiter   optional, the delimiter used in the string key to break apart the key values
+     *
+     * @return bool
      *
      * @throws InvalidArgumentException if an invalid delimiter is used
      *
      * @since 1.0.0
-     *
-     * @return bool
      */
-    public static function has(array $array, $key, $delimiter = self::DEFAULT_DELIMITER) {
+    public static function has(array $searchArray, $searchKey, $delimiter = self::DEFAULT_DELIMITER) {
         self::validateDelimiter($delimiter);
-        $v = self::get($array, $key, "\0\0", $delimiter);
+        $v = self::get($searchArray, $searchKey, "\0\0", $delimiter);
 
         return "\0\0" !== $v; // if the default value is returned then the key was not found
     }
@@ -108,31 +108,31 @@ final class Dot {
      * there is no value in the provided key position then the initial value is used as an initializer (starting count)
      * for the value.
      *
-     * @param mixed[]          $array
-     * @param non-empty-string $key         a string representation of a nested key value delimited by '.' or the passed delimiters
-     * @param int|float        $incrementor optional, incrementing amount, defaults to +1
-     * @param int|float        $default     optional, default amount if the key location has no initial value
-     * @param non-empty-string $delimiter   optional, the delimiter used in the string key to break apart the key values
+     * @param mixed[]          $incrementArray
+     * @param non-empty-string $incrementKey   a string representation of a nested key value delimited by '.' or the passed delimiters
+     * @param int|float        $incrementor    optional, incrementing amount, defaults to +1
+     * @param int|float        $default        optional, default amount if the key location has no initial value
+     * @param non-empty-string $delimiter      optional, the delimiter used in the string key to break apart the key values
      *
-     * @return int return the value in the key position after it has been incremented
-     *
-     * @since 1.0.0
+     * @return int|float return the value in the key position after it has been incremented
      *
      * @throws InvalidArgumentException if the value in the key position is not a numeric value
+     *
+     * @since 1.0.0
      */
-    public static function increment(array &$array, $key, $incrementor = 1, $default = 0, $delimiter = self::DEFAULT_DELIMITER) {
+    public static function increment(array &$incrementArray, $incrementKey, $incrementor = 1, $default = 0, $delimiter = self::DEFAULT_DELIMITER) {
         self::validateDelimiter($delimiter);
         if (!is_numeric($incrementor)) {
             throw new InvalidArgumentException('The provided incrementor is not a numeric value');
         }
-        $initial_value = self::get($array, $key, $default, $delimiter);
+        $initial_value = self::get($incrementArray, $incrementKey, $default, $delimiter);
         if (!is_numeric($initial_value)) {
-            throw new InvalidArgumentException("The value at the key position '{$key}' is not a numeric value");
+            throw new InvalidArgumentException("The value at the key position '{$incrementKey}' is not a numeric value");
         }
-        self::set($array, $key,
+        self::set($incrementArray, $incrementKey,
             $initial_value + $incrementor, $delimiter);
 
-        return self::get($array, $key, null, $delimiter);
+        return self::get($incrementArray, $incrementKey, null, $delimiter);
     }
 
     /**
@@ -141,21 +141,21 @@ final class Dot {
      * It $return is set to Dot::COUNT_NEGATIVE_ON_NON_ARRAY the method will return -1 if the value is not set or the
      * key position is not an array.
      *
-     * @param mixed[]          $array
-     * @param non-empty-string $key       a string representation of a nested key value delimited by '.' or the passed delimiters
-     * @param non-empty-string $delimiter optional, the delimiter used in the string key to break apart the key values
-     * @param int              $return    defaults to returning 0 count on not set or not array, can be set to return -1
+     * @param mixed[]          $countArray
+     * @param non-empty-string $countKey   a string representation of a nested key value delimited by '.' or the passed delimiters
+     * @param non-empty-string $delimiter  optional, the delimiter used in the string key to break apart the key values
+     * @param int              $return     defaults to returning 0 count on not set or not array, can be set to return -1
+     *
+     * @return int
      *
      * @throws InvalidArgumentException if an invalid delimiter is used
      *
      * @since 1.0.0
-     *
-     * @return int
      */
-    public static function count(array $array, $key, $delimiter = self::DEFAULT_DELIMITER, $return = self::ZERO_ON_NON_ARRAY) {
+    public static function count(array $countArray, $countKey, $delimiter = self::DEFAULT_DELIMITER, $return = self::ZERO_ON_NON_ARRAY) {
         self::validateDelimiter($delimiter);
         $default = (self::NEGATIVE_ON_NON_ARRAY === $return) ? -1 : 0;
-        $position = self::get($array, $key, '', $delimiter);
+        $position = self::get($countArray, $countKey, '', $delimiter);
 
         return is_array($position) ? count($position) : $default;
     }
@@ -165,46 +165,46 @@ final class Dot {
      * array with the existing value and new value.  If the key does not exist its full path will be set to an array
      * containing the value submitted.
      *
-     * @param mixed[]          $array
-     * @param non-empty-string $key       a string representation of a nested key value delimited by '.' or the passed delimiters
+     * @param mixed[]          $appendArray
+     * @param non-empty-string $appendKey   a string representation of a nested key value delimited by '.' or the passed delimiters
      * @param array|mixed|null $value
-     * @param non-empty-string $delimiter optional, the delimiter used in the string key to break apart the key values
+     * @param non-empty-string $delimiter   optional, the delimiter used in the string key to break apart the key values
+     *
+     * @return void
      *
      * @throws InvalidArgumentException if an invalid deliminator is used
      *
      * @since 1.0.0
-     *
-     * @return void
      */
-    public static function append(array &$array, $key, $value, $delimiter = self::DEFAULT_DELIMITER) {
+    public static function append(array &$appendArray, $appendKey, $value, $delimiter = self::DEFAULT_DELIMITER) {
         self::validateDelimiter($delimiter);
-        $current = self::get($array, $key, [], $delimiter);
+        $current = self::get($appendArray, $appendKey, [], $delimiter);
         $current = (is_array($current)) ? $current : [$current];
         $value = (is_array($value)) ? $value : [$value];
-        self::set($array, $key, array_merge($current, $value), $delimiter);
+        self::set($appendArray, $appendKey, array_merge($current, $value), $delimiter);
     }
 
     /**
      * Unset the provided key position in the array if it exists.
      *
-     * @param mixed[]          $array
-     * @param non-empty-string $key       a string representation of a nested key value delimited by '.' or the passed delimiters
-     * @param non-empty-string $delimiter optional, the delimiter used in the string key to break apart the key values
-     *
-     * @since 1.0.0
+     * @param mixed[]          $deleteArray
+     * @param non-empty-string $deleteKey   a string representation of a nested key value delimited by '.' or the passed delimiters
+     * @param non-empty-string $delimiter   optional, the delimiter used in the string key to break apart the key values
      *
      * @return void
+     *
+     *@since 1.0.0
      */
-    public static function delete(array &$array, $key, $delimiter = self::DEFAULT_DELIMITER) {
+    public static function delete(array &$deleteArray, $deleteKey, $delimiter = self::DEFAULT_DELIMITER) {
         self::validateDelimiter($delimiter);
 
-        if (!self::has($array, $key)) {
+        if (!self::has($deleteArray, $deleteKey)) {
             return;
         }
 
-        $keys = explode($delimiter, $key);
+        $keys = explode($delimiter, $deleteKey);
         $final = array_pop($keys);
-        $current = &$array;
+        $current = &$deleteArray;
         foreach ($keys as $_key) {
             if (is_array($current[$_key])) {
                 $current = &$current[$_key];

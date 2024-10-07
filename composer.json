@@ -24,7 +24,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "AxeTools\\Utilities\\Dot\\Tests\\": "tests"
+            "Tests\\AxeTools\\Utilities\\Dot\\": "tests"
         }
     },
     "authors": [

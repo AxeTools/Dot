@@ -290,7 +290,7 @@ autoloader.
 
 #### Description
 ```
-Dot::increment(array &$incrementArray, string $incrementKey, int|float $incrment = 1, int|float $default = 0, string $delimiter = '.'): int|float
+Dot::increment(array &$incrementArray, string $incrementKey, int|float $incrmentor = 1, int|float $default = 0, string $delimiter = '.'): int|float
 ```
 
 #### Parameters
@@ -302,7 +302,7 @@ Dot::increment(array &$incrementArray, string $incrementKey, int|float $incrment
 <dd>The delimited key that will be searched for in the provided incrementArray.  If the array does not have string
 keys number strings can be used instead to access the appropriate position in the array</dd>
 
-<dt>increment</dt>
+<dt>incrementor</dt>
 <dd>The amount to increment the value by.  This can be positive or negative numeric values, either integers or
 floats.</dd>
 
@@ -316,7 +316,35 @@ array keys already</dd>
 
 #### Return Value
 
+The method returns an `int|float` depending on the incrementor and (default or initial key value) from the incrmenetArray.
+If the incrementor is an `int` and the initial key value is an `int` then the method's return will be an `int`. If the
+incrementor or (default or initial key value) are `float` values then the method will return a float.
+
 #### Examples
+
+##### Example #1 looping over an uninitialized array
+
+```php
+$test = [];
+foreach(['process.ran', 'process.completed', 'process.success'] as $position){
+    foreach(range(0,49) as $_){
+        Dot::increment($test, $position);
+    }
+}
+
+var_export($test);
+```
+
+```text
+array (
+  'process' =>
+  array (
+    'ran' => 50,
+    'completed' => 50,
+    'success' => 50,
+  ),
+)
+```
 
 ### `Dot::append()`
 
@@ -497,16 +525,16 @@ autoloader.
 #### Description
 
 ```
-Dot::count(array &$setArray, string $setKey, string $delimiter = '.', int $return = Dot::ZERO_ON_NON_ARRAY): int
+Dot::count(array &$countArray, string $countKey, string $delimiter = '.', int $return = Dot::ZERO_ON_NON_ARRAY): int
 ```
 
 #### Parameters
 
 <dl>
-<dt>setArray</dt>
+<dt>countArray</dt>
 <dd>The array that will the value will be placed inside</dd>
 
-<dt>setKey</dt>
+<dt>countKey</dt>
 <dd>The delimited key that will be searched for in the provided searchArray.  If the array does not have string
 keys number strings can be used instead to access the appropriate position in the array</dd>
 

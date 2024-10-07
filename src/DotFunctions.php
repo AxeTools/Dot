@@ -8,89 +8,80 @@
 use AxeTools\Utilities\Dot\Dot;
 
 /**
- * Return the value that the array has for the dot notation key, if there is no value to return the default is
- * returned.
+ * Return the value that the array has for the dot notation key, if there is no value to return the default is returned.
  *
- * @param mixed[]          $array
- * @param non-empty-string $key
- * @param mixed|null       $default
- * @param non-empty-string $delimiter
+ * @param mixed[]          $searchArray
+ * @param non-empty-string $searchKey   a string representation of a nested key value delimited by '.' or the passed delimiters
+ * @param mixed|null       $default     optional, the default value to return if there is no value set in the key position of the array
+ * @param non-empty-string $delimiter   optional, the delimiter used in the string key to break apart the key values
  *
  * @return array|mixed|null
+ *
+ *@throws InvalidArgumentException if an invalid delimiter is used
+ *
+ * @since 1.0.0
  */
 function dotGet(
-    array $array,
-           $key,
-           $default = null,
-           $delimiter = Dot::DEFAULT_DELIMITER
+    array $searchArray, $searchKey, $default = null, $delimiter = Dot::DEFAULT_DELIMITER
 ) {
-    return Dot::get($array, $key, $default, $delimiter);
+    return Dot::get($searchArray, $searchKey, $default, $delimiter);
 }
 
 /**
  * Set the value in the array dictated by the dot notation key, if the path of the key does not exist it will be
  * created in the array.
  *
- * @param mixed[]          $array
- * @param non-empty-string $key
- * @param array|mixed|null $value
- * @param non-empty-string $delimiter
+ * @param mixed[]          $setArray
+ * @param non-empty-string $setKey    a string representation of a nested key value delimited by '.' or the passed delimiters
+ * @param array|mixed|null $value     The value to set in the array at the passed key location
+ * @param non-empty-string $delimiter optional, the delimiter used in the string key to break apart the key values
  *
  * @return void
  *
- * @throws InvalidArgumentException
+ *@throws InvalidArgumentException if an invalid delimiter is used
+ *
+ * @since 1.0.0
  */
-function dotSet(
-    array &$array,
-           $key,
-           $value,
-           $delimiter = Dot::DEFAULT_DELIMITER
-) {
-    Dot::set($array, $key, $value, $delimiter);
+function dotSet(array &$setArray, $setKey, $value, $delimiter = Dot::DEFAULT_DELIMITER) {
+    Dot::set($setArray, $setKey, $value, $delimiter);
 }
 
 /**
  * Does the array have the passed dot notation key.
  *
- * @param mixed[]          $array
- * @param non-empty-string $key       Dot notation key
- * @param non-empty-string $delimiter
+ * @param mixed[]          $searchArray
+ * @param non-empty-string $searchKey   a string representation of a nested key value delimited by '.' or the passed delimiters
+ * @param non-empty-string $delimiter   optional, the delimiter used in the string key to break apart the key values
  *
  * @return bool
  *
  * @throws InvalidArgumentException if an invalid delimiter is used
+ *
+ * @since 1.0.0
  */
-function dotHas(
-    array $array,
-           $key,
-           $delimiter = Dot::DEFAULT_DELIMITER
-) {
-    return Dot::has($array, $key, $delimiter);
+function dotHas(array $searchArray, $searchKey, $delimiter = Dot::DEFAULT_DELIMITER) {
+    return Dot::has($searchArray, $searchKey, $delimiter);
 }
 
 /**
  * Increment the value at the provided key position by the value passed in the incrementor (can be negative).  If
- * there is no value in the provided key position then the default value is used as an initializer (starting count)
+ * there is no value in the provided key position then the initial value is used as an initializer (starting count)
  * for the value.
  *
- * @param mixed[]          $array
- * @param non-empty-string $key
- * @param int|float        $incrementor
- * @param int|float        $default
- * @param non-empty-string $delimiter
+ * @param mixed[]          $incrementArray
+ * @param non-empty-string $incrementKey   a string representation of a nested key value delimited by '.' or the passed delimiters
+ * @param int|float        $incrementor    optional, incrementing amount, defaults to +1
+ * @param int|float        $default        optional, default amount if the key location has no initial value
+ * @param non-empty-string $delimiter      optional, the delimiter used in the string key to break apart the key values
+ *
+ * @return int|float return the value in the key position after it has been incremented
  *
  * @throws InvalidArgumentException if the value in the key position is not a numeric value
  *
- * @return int|float return the value in the key position after it has been incremented
+ * @since 1.0.0
  */
-function dotIncrement(
-    array &$array,
-    $key,
-    $incrementor,
-    $default,
-    $delimiter = Dot::DEFAULT_DELIMITER
-) {
-    return Dot::increment($array, $key, $incrementor, $default, $delimiter);
+function dotIncrement(array &$incrementArray, $incrementKey, $incrementor = 1, $default = 0, $delimiter = Dot::DEFAULT_DELIMITER) {
+    return Dot::increment($incrementArray, $incrementKey, $incrementor, $default, $delimiter);
 }
 
 /**
@@ -99,22 +90,19 @@ function dotIncrement(
  * It $return is set to Dot::COUNT_NEGATIVE_ON_NON_ARRAY the method will return -1 if the value is not set or the
  * key position is not an array.
  *
- * @param mixed[]          $array
- * @param non-empty-string $key
- * @param non-empty-string $delimiter
- * @param int              $return    defaults to returning 0 count on not set or not array, can be set to return -1
+ * @param mixed[]          $countArray
+ * @param non-empty-string $countKey   a string representation of a nested key value delimited by '.' or the passed delimiters
+ * @param non-empty-string $delimiter  optional, the delimiter used in the string key to break apart the key values
+ * @param int              $return     defaults to returning 0 count on not set or not array, can be set to return -1
  *
  * @return int
  *
  * @throws InvalidArgumentException if an invalid delimiter is used
+ *
+ * @since 1.0.0
  */
-function dotCount(
-    array $array,
-           $key,
-           $delimiter = Dot::DEFAULT_DELIMITER,
-           $return = Dot::ZERO_ON_NON_ARRAY
-) {
-    return Dot::count($array, $key, $delimiter, $return);
+function dotCount(array $countArray, $countKey, $delimiter = Dot::DEFAULT_DELIMITER, $return = Dot::ZERO_ON_NON_ARRAY) {
+    return Dot::count($countArray, $countKey, $delimiter, $return);
 }
 
 /**
@@ -141,22 +129,19 @@ function dotDelete(
  * array with the existing value and new value.  If the key does not exist its full path will be set to an array
  * containing the value submitted.
  *
- * @param mixed[]          $array
- * @param non-empty-string $key
+ * @param mixed[]          $appendArray
+ * @param non-empty-string $appendKey   a string representation of a nested key value delimited by '.' or the passed delimiters
  * @param array|mixed|null $value
- * @param non-empty-string $delimiter
+ * @param non-empty-string $delimiter   optional, the delimiter used in the string key to break apart the key values
  *
  * @return void
  *
  * @throws InvalidArgumentException if an invalid deliminator is used
+ *
+ * @since 1.0.0
  */
-function dotAppend(
-    array &$array,
-           $key,
-           $value,
-           $delimiter = Dot::DEFAULT_DELIMITER
-) {
-    Dot::append($array, $key, $value, $delimiter);
+function dotAppend(array &$appendArray, $appendKey, $value, $delimiter = Dot::DEFAULT_DELIMITER) {
+    Dot::append($appendArray, $appendKey, $value, $delimiter);
 }
 
 /**

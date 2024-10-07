@@ -1,7 +1,7 @@
 ---
-name: Question
+name: "\U0001F917 Question"
 about: Ask a question about how to use this library
-labels: question
+labels: question, triage
 assignees: ''
 ---
 <!--- Provide a general summary of your question within the above title. -->
