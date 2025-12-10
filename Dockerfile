@@ -1,20 +1,11 @@
-FROM php:5.6-fpm-stretch
+FROM php:8.0-fpm-bullseye
 
-# since stretch is EOL we need to pull in the archive repos to update and install the packages
-RUN echo "deb http://archive.debian.org/debian stretch main" > /etc/apt/sources.list
-
-RUN apt-get update && apt-get install -y --no-install-recommends --allow-unauthenticated \
-zlib1g-dev \
-libxml2-dev \
-libzip-dev \
+RUN apt-get update && apt-get install -y --no-install-recommends \
 unzip \
 && docker-php-ext-install \
-zip \
-intl \
-mysqli \
 opcache
 
-RUN yes | pecl install xdebug-2.5.5 \
+RUN yes | pecl install xdebug-3.4.7 \
 && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
 && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/xdebug.ini \
 && echo "xdebug.discover_client_host=1" >> /usr/local/etc/php/conf.d/xdebug.ini \

@@ -3,37 +3,36 @@
 namespace Tests\AxeTools\Utilities\Dot;
 
 use AxeTools\Utilities\Dot\Dot;
-use InvalidArgumentException;
 
 class GetTest extends DotBase {
     /**
      * @test
+     *
      * @dataProvider getDataProvider
      *
-     * @param mixed[]          $test
+     * @param array<mixed>     $test
      * @param non-empty-string $key
      * @param array|mixed|null $expected
-     * @param mixed|null       $default
      *
      * @return void
      */
-    public function get(array $test, $key, $expected, $default = null) {
+    public function get(array $test, string $key, mixed $expected, mixed $default = null) {
         $actual = Dot::get($test, $key, $default, Dot::DEFAULT_DELIMITER);
         $this->assertEquals($expected, $actual);
     }
 
     /**
      * @test
+     *
      * @dataProvider getDataProvider
      *
-     * @param mixed[]          $test
+     * @param array<mixed>     $test
      * @param non-empty-string $key
      * @param array|mixed|null $expected
-     * @param mixed|null       $default
      *
      * @return void
      */
-    public function getCustomDelimiter(array $test, $key, $expected, $default = null) {
+    public function getCustomDelimiter(array $test, string $key, mixed $expected, mixed $default = null) {
         $custom_delimiter = '~';
         $key = str_replace('.', $custom_delimiter, $key);
 
@@ -43,16 +42,16 @@ class GetTest extends DotBase {
 
     /**
      * @test
+     *
      * @dataProvider getDataProvider
      *
-     * @param mixed[]          $test
+     * @param array<mixed>     $test
      * @param non-empty-string $key
      * @param array|mixed|null $expected
-     * @param mixed|null       $default
      *
      * @return void
      */
-    public function getFunction(array $test, $key, $expected, $default = null) {
+    public function getFunction(array $test, string $key, mixed $expected, mixed $default = null) {
         $actual = dotGet($test, $key, $default, Dot::DEFAULT_DELIMITER);
         $this->assertEquals($expected, $actual);
     }
@@ -63,25 +62,26 @@ class GetTest extends DotBase {
      * @param non-empty-string $deliminator
      *
      * @return void
+     *
      * @dataProvider invalidDelimiterDataProvider
      */
-    public function getEmptyStringFailure($deliminator) {
-        $this->expectException(InvalidArgumentException::class);
+    public function getEmptyStringFailure(string $deliminator) {
+        $this->expectException(\InvalidArgumentException::class);
         Dot::get([], 'test.test', null, $deliminator);
     }
 
     /**
      * @test
+     *
      * @dataProvider getDataProvider
      *
-     * @param mixed[]          $test
+     * @param array<mixed>     $test
      * @param non-empty-string $key
      * @param array|mixed|null $expected
-     * @param mixed|null       $default
      *
      * @return void
      */
-    public function getFunctionCustomDelimiter(array $test, $key, $expected, $default = null) {
+    public function getFunctionCustomDelimiter(array $test, string $key, mixed $expected, mixed $default = null) {
         $custom_delimiter = '~';
         $key = str_replace('.', $custom_delimiter, $key);
 
@@ -95,17 +95,18 @@ class GetTest extends DotBase {
      * @param non-empty-string $deliminator
      *
      * @return void
+     *
      * @dataProvider invalidDelimiterDataProvider
      */
-    public function getFunctionEmptyStringFailure($deliminator) {
-        $this->expectException(InvalidArgumentException::class);
+    public function getFunctionEmptyStringFailure(string $deliminator) {
+        $this->expectException(\InvalidArgumentException::class);
         dotGet([], 'test.test', null, $deliminator);
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
-    public static function getDataProvider() {
+    public static function getDataProvider(): array {
         return [
             'first level test' => [self::$base_search_array, 'test1', ['test1' => 'test1.test1']],
 

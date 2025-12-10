@@ -3,14 +3,14 @@
 namespace Tests\AxeTools\Utilities\Dot;
 
 use AxeTools\Utilities\Dot\Dot;
-use InvalidArgumentException;
 
 class FlattenTest extends DotBase {
     /**
      * @test
+     *
      * @dataProvider flattenDataProvider
      *
-     * @param mixed[]                        $test
+     * @param array<mixed>                   $test
      * @param array<non-empty-string, mixed> $expected
      *
      * @return void
@@ -27,15 +27,16 @@ class FlattenTest extends DotBase {
 
     /**
      * @test
+     *
      * @dataProvider flattenWithCustomDelimitersDataProvider
      *
      * @param non-empty-string $delimiter
-     * @param mixed[]          $test
-     * @param mixed[]          $expected
+     * @param array<mixed>     $test
+     * @param array<mixed>     $expected
      *
      * @return void
      */
-    public function flattenWithCustomDelimiters($delimiter, array $test, array $expected) {
+    public function flattenWithCustomDelimiters(string $delimiter, array $test, array $expected) {
         $actual = Dot::flatten($test, $delimiter);
         $this->assertEquals($expected, $actual);
         $reset = [];
@@ -49,20 +50,22 @@ class FlattenTest extends DotBase {
      * @test
      *
      * @param non-empty-string $deliminator
+     *
      * @dataProvider invalidDelimiterDataProvider
      *
      * @return void
      */
-    public function flattenEmptyStringFailure($deliminator) {
-        $this->expectException(InvalidArgumentException::class);
+    public function flattenEmptyStringFailure(string $deliminator) {
+        $this->expectException(\InvalidArgumentException::class);
         Dot::flatten([], $deliminator);
     }
 
     /**
      * @test
+     *
      * @dataProvider flattenDataProvider
      *
-     * @param mixed[]                        $test
+     * @param array<mixed>                   $test
      * @param array<non-empty-string, mixed> $expected
      *
      * @return void
@@ -79,15 +82,16 @@ class FlattenTest extends DotBase {
 
     /**
      * @test
+     *
      * @dataProvider flattenWithCustomDelimitersDataProvider
      *
      * @param non-empty-string $delimiter
-     * @param mixed[]          $test
-     * @param mixed[]          $expected
+     * @param array<mixed>     $test
+     * @param array<mixed>     $expected
      *
      * @return void
      */
-    public function flattenFunctionWithCustomDelimiters($delimiter, array $test, array $expected) {
+    public function flattenFunctionWithCustomDelimiters(string $delimiter, array $test, array $expected) {
         $actual = dotFlatten($test, $delimiter);
         $this->assertEquals($expected, $actual);
         $reset = [];
@@ -101,19 +105,20 @@ class FlattenTest extends DotBase {
      * @test
      *
      * @param non-empty-string $deliminator
+     *
      * @dataProvider invalidDelimiterDataProvider
      *
      * @return void
      */
-    public function flattenFunctionEmptyStringFailure($deliminator) {
-        $this->expectException(InvalidArgumentException::class);
+    public function flattenFunctionEmptyStringFailure(string $deliminator) {
+        $this->expectException(\InvalidArgumentException::class);
         dotFlatten([], $deliminator);
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
-    public static function flattenDataProvider() {
+    public static function flattenDataProvider(): array {
         return [
             'single item pass through' => [['test' => 'test'], ['test' => 'test']],
             'single nested item' => [['test' => ['test' => 'test']], ['test.test' => 'test']],
@@ -141,9 +146,9 @@ class FlattenTest extends DotBase {
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
-    public static function flattenWithCustomDelimitersDataProvider() {
+    public static function flattenWithCustomDelimitersDataProvider(): array {
         return [
             'single nested item' => ['_', ['test' => ['test' => 'test']], ['test_test' => 'test']],
             'multi nested items' => [

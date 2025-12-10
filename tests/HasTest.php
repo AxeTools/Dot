@@ -3,21 +3,20 @@
 namespace Tests\AxeTools\Utilities\Dot;
 
 use AxeTools\Utilities\Dot\Dot;
-use InvalidArgumentException;
 
 class HasTest extends DotBase {
     /**
      * @test
+     *
      * @dataProvider hasDataProvider
      *
-     * @param mixed[]          $test
+     * @param array<mixed>     $test
      * @param non-empty-string $key
-     * @param bool             $expected
      * @param non-empty-string $delimiter
      *
      * @return void
      */
-    public function has(array $test, $key, $expected, $delimiter = Dot::DEFAULT_DELIMITER) {
+    public function has(array $test, string $key, bool $expected, string $delimiter = Dot::DEFAULT_DELIMITER) {
         $actual = Dot::has($test, $key, $delimiter);
         $this->assertEquals($expected, $actual);
     }
@@ -26,27 +25,28 @@ class HasTest extends DotBase {
      * @test
      *
      * @param non-empty-string $deliminator
+     *
      * @dataProvider invalidDelimiterDataProvider
      *
      * @return void
      */
-    public function hasEmptyStringFailure($deliminator) {
-        $this->expectException(InvalidArgumentException::class);
+    public function hasEmptyStringFailure(string $deliminator) {
+        $this->expectException(\InvalidArgumentException::class);
         Dot::has([], 'test.test', $deliminator);
     }
 
     /**
      * @test
+     *
      * @dataProvider hasDataProvider
      *
-     * @param mixed[]          $test
+     * @param array<mixed>     $test
      * @param non-empty-string $key
-     * @param bool             $expected
      * @param non-empty-string $delimiter
      *
      * @return void
      */
-    public function hasFunction(array $test, $key, $expected, $delimiter = Dot::DEFAULT_DELIMITER) {
+    public function hasFunction(array $test, string $key, bool $expected, string $delimiter = Dot::DEFAULT_DELIMITER) {
         $actual = dotHas($test, $key, $delimiter);
         $this->assertEquals($expected, $actual);
     }
@@ -55,19 +55,20 @@ class HasTest extends DotBase {
      * @test
      *
      * @param non-empty-string $deliminator
+     *
      * @dataProvider invalidDelimiterDataProvider
      *
      * @return void
      */
-    public function hasFunctionEmptyStringFailure($deliminator) {
-        $this->expectException(InvalidArgumentException::class);
+    public function hasFunctionEmptyStringFailure(string $deliminator) {
+        $this->expectException(\InvalidArgumentException::class);
         dotHas([], 'test.test', $deliminator);
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
-    public static function hasDataProvider() {
+    public static function hasDataProvider(): array {
         return [
             'single level present' => [self::$base_search_array, 'test1', true],
             'single level not present' => [self::$base_search_array, 'notthere', false],

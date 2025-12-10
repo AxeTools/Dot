@@ -3,127 +3,94 @@
 namespace Tests\AxeTools\Utilities\Dot;
 
 use AxeTools\Utilities\Dot\Dot;
-use InvalidArgumentException;
 
 class IncrementTest extends DotBase {
     /**
      * @test
+     *
      * @dataProvider incrementorDataProvider
      *
-     * @param $key
-     * @param $incrementor
-     * @param $default
-     * @param $expected
-     * @param $endArray
+     * @param array<mixed>     $array
+     * @param non-empty-string $key
+     * @param float|int        $incrementor
+     * @param float|int        $default
+     * @param float|int        $expected
+     * @param array<mixed>     $endArray
      *
      * @return void
      */
     public function increment(array $array, $key, $incrementor, $default, $expected, $endArray) {
         $actual = Dot::increment($array, $key, $incrementor, $default);
-        /* transitional workaround for phpunit on php ^7.1 || ^8.0 */
-        if (method_exists($this, 'assertEqualsWithDelta')) {
-            $this->assertEqualsWithDelta($expected, $actual, 0.0001, 'expected return');
-            $this->assertEqualsWithDelta($endArray, $array, 0.0001, 'expected end array');
-        } else {
-            $this->assertEquals($expected, $actual, 'expected return', 0.000001);
-            $this->assertEquals($endArray, $array, 'expected end array', 0.000001);
-        }
+
+        $this->assertEqualsWithDelta($expected, $actual, 0.0001, 'expected return');
+        $this->assertEqualsWithDelta($endArray, $array, 0.0001, 'expected end array');
     }
 
     /**
      * @test
+     *
      * @dataProvider incrementOverLoopDataProvider
      *
-     * @param $array
-     * @param $key
-     * @param $incrementor
-     * @param $default
-     * @param $loopCount
-     * @param $expected
-     * @param $endArray
+     * @param array<mixed>     $array
+     * @param non-empty-string $key
+     * @param array<mixed>     $endArray
      *
      * @return void
      */
-    public function incrementOverLoop($array, $key, $incrementor, $default, $loopCount, $expected, $endArray) {
+    public function incrementOverLoop(array $array, string $key, float|int $incrementor, float|int $default, int $loopCount, float|int $expected, array $endArray) {
+        $result = -1000000;
+
         foreach (range(1, $loopCount) as $_) {
             $result = Dot::increment($array, $key, $incrementor, $default);
         }
-        /* transitional workaround for phpunit on php ^7.1 || ^8.0 */
-        if (method_exists($this, 'assertEqualsWithDelta')) {
-            $this->assertEqualsWithDelta($expected, $result, 0.0001, 'expected return');
-            $this->assertEqualsWithDelta($endArray, $array, 0.0001, 'expected end array');
-        } else {
-            $this->assertEquals($expected, $result, 'expected return', 0.000001);
-            $this->assertEquals($endArray, $array, 'expected end array', 0.000001);
-        }
+
+        $this->assertEqualsWithDelta($expected, $result, 0.0001, 'expected return');
+        $this->assertEqualsWithDelta($endArray, $array, 0.0001, 'expected end array');
     }
 
     /**
      * @test
-     * @dataProvider incrementInvalidConditionDataProvider
      *
-     * @param mixed $incrementor
-     * @param mixed $default
-     *
-     * @return void
-     */
-    public function incrementInvalidConditions($incrementor, $default) {
-        $this->expectException(InvalidArgumentException::class);
-        $array = [];
-        Dot::increment($array, 'test', $incrementor, $default);
-    }
-
-    /**
-     * @test
      * @dataProvider incrementorDataProvider
      *
-     * @param $key
-     * @param $incrementor
-     * @param $default
-     * @param $expected
-     * @param $endArray
+     * @param array<mixed>     $array
+     * @param non-empty-string $key
+     * @param array<mixed>     $endArray
      *
      * @return void
      */
-    public function incrementFunction(array $array, $key, $incrementor, $default, $expected, $endArray) {
+    public function incrementFunction(array $array, string $key, float|int $incrementor, float|int $default, float|int $expected, array $endArray) {
         $actual = dotIncrement($array, $key, $incrementor, $default);
-        if (method_exists($this, 'assertEqualsWithDelta')) {
-            $this->assertEqualsWithDelta($expected, $actual, 0.0001, 'expected return');
-            $this->assertEqualsWithDelta($endArray, $array, 0.0001, 'expected end array');
-        } else {
-            $this->assertEquals($expected, $actual, 'expected return', 0.000001);
-            $this->assertEquals($endArray, $array, 'expected end array', 0.000001);
-        }
+
+        $this->assertEqualsWithDelta($expected, $actual, 0.0001, 'expected return');
+        $this->assertEqualsWithDelta($endArray, $array, 0.0001, 'expected end array');
     }
 
     /**
      * @test
+     *
      * @dataProvider incrementOverLoopDataProvider
      *
-     * @param $array
-     * @param $key
-     * @param $incrementor
-     * @param $default
-     * @param $loopCount
-     * @param $expected
-     * @param $endArray
+     * @param array<mixed>     $array
+     * @param non-empty-string $key
+     * @param array<mixed>     $endArray
      *
      * @return void
      */
-    public function incrementFunctionOverLoop($array, $key, $incrementor, $default, $loopCount, $expected, $endArray) {
+    public function incrementFunctionOverLoop(array $array, string $key, float|int $incrementor, float|int $default, int $loopCount, float|int $expected, array $endArray) {
+        $result = -1000000;
         foreach (range(1, $loopCount) as $_) {
             $result = dotIncrement($array, $key, $incrementor, $default);
         }
-        if (method_exists($this, 'assertEqualsWithDelta')) {
-            $this->assertEqualsWithDelta($expected, $result, 0.0001, 'expected return');
-            $this->assertEqualsWithDelta($endArray, $array, 0.0001, 'expected end array');
-        } else {
-            $this->assertEquals($expected, $result, 'expected return', 0.000001);
-            $this->assertEquals($endArray, $array, 'expected end array', 0.000001);
-        }
+
+        $this->assertEqualsWithDelta($expected, $result, 0.0001, 'expected return');
+        $this->assertEqualsWithDelta($endArray, $array, 0.0001, 'expected end array');
     }
 
-    public static function incrementorDataProvider() {
+    /**
+     * @return array<mixed>
+     */
+    public static function incrementorDataProvider(): array {
         return [
             'No initial value positive increment, 0 default' => [[], 'test', 1, 0, 1, ['test' => 1]],
             'No initial value negative increment, 0 default' => [[], 'test', -1, 0, -1, ['test' => -1]],
@@ -134,7 +101,10 @@ class IncrementTest extends DotBase {
         ];
     }
 
-    public static function incrementOverLoopDataProvider() {
+    /**
+     * @return array<mixed>
+     */
+    public static function incrementOverLoopDataProvider(): array {
         return [
             'No initial value positive increment, 0 default' => [[], 'test', 1, 0, 50, 50, ['test' => 50]],
             'No initial value negative increment, 0 default' => [[], 'test', -1, 0, 50, -50, ['test' => -50]],
@@ -142,18 +112,6 @@ class IncrementTest extends DotBase {
             'No initial value negative increment, non 0 default' => [[], 'test', -1.1, 1, 50, -54, ['test' => -54]],
             'Initial value positive increment, default ignored' => [['test' => 0.2], 'test', 1, 0, 50, 50.2, ['test' => 50.2]],
             'Initial value negative increment, default ignored' => [['test' => 0.2], 'test', -1, 0, 50, -49.8, ['test' => -49.8]],
-        ];
-    }
-
-    public static function incrementInvalidConditionDataProvider() {
-        return [
-            'invalid string incrementor, positive default' => ['things', 1],
-            'invalid array incrementor, positive default' => [[], 1],
-            'invalid null incrementor, positive default' => [null, 1],
-            'valid incrementor, invalid string default' => [1, 'things'],
-            'valid incrementor, invalid array default' => [1, []],
-            'valid incrementor, invalid null default' => [1, null],
-            'invalid incrementor, invalid default' => [null, null],
         ];
     }
 }

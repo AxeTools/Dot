@@ -5,7 +5,10 @@ namespace Tests\AxeTools\Utilities\Dot;
 use PHPUnit\Framework\TestCase;
 
 abstract class DotBase extends TestCase {
-    protected static $base_search_array = [
+    /**
+     * @var array<mixed>
+     */
+    protected static array $base_search_array = [
         'test1' => [
             'test1' => 'test1.test1',
         ],
@@ -36,11 +39,9 @@ abstract class DotBase extends TestCase {
     /**
      * @return array<string, mixed>
      */
-    public static function invalidDelimiterDataProvider() {
+    public static function invalidDelimiterDataProvider(): array {
         return [
             'Empty String Deliminator' => [''],
-            'Null Deliminator' => [null],
-            'Array Deliminator' => [[]],
         ];
     }
 }

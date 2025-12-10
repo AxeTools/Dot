@@ -7,40 +7,40 @@ use AxeTools\Utilities\Dot\Dot;
 class CountTest extends DotBase {
     /**
      * @test
+     *
      * @dataProvider dotCountDataProvider
      *
-     * @param mixed[]          $test
+     * @param array<mixed>     $test
      * @param non-empty-string $key
-     * @param int              $expected
      * @param non-empty-string $delimiter
      *
      * @return void
      */
-    public function dotCount(array $test, $key, $expected, $delimiter = Dot::DEFAULT_DELIMITER, $return = Dot::ZERO_ON_NON_ARRAY) {
+    public function dotCount(array $test, string $key, int $expected, string $delimiter = Dot::DEFAULT_DELIMITER, int $return = Dot::ZERO_ON_NON_ARRAY) {
         $actual = Dot::count($test, $key, $delimiter, $return);
         $this->assertEquals($expected, $actual);
     }
 
     /**
      * @test
+     *
      * @dataProvider dotCountDataProvider
      *
-     * @param mixed[]          $test
+     * @param array<mixed>     $test
      * @param non-empty-string $key
-     * @param int              $expected
      * @param non-empty-string $delimiter
      *
      * @return void
      */
-    public function dotCountFunction(array $test, $key, $expected, $delimiter = Dot::DEFAULT_DELIMITER, $return = Dot::ZERO_ON_NON_ARRAY) {
+    public function dotCountFunction(array $test, string $key, int $expected, string $delimiter = Dot::DEFAULT_DELIMITER, int $return = Dot::ZERO_ON_NON_ARRAY) {
         $actual = dotCount($test, $key, $delimiter, $return);
         $this->assertEquals($expected, $actual);
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
-    public static function dotCountDataProvider() {
+    public static function dotCountDataProvider(): array {
         return [
             'empty array' => [[], 'a', -1, Dot::DEFAULT_DELIMITER, Dot::NEGATIVE_ON_NON_ARRAY],
             'string value test' => [['a' => ''], 'a', -1, Dot::DEFAULT_DELIMITER, Dot::NEGATIVE_ON_NON_ARRAY],
