@@ -7,3 +7,5 @@ composer.lock
 phpunit.xml
 .php_cs.cache
 docker-compose.override.yml
+.php-cs-fixer.cache
+.phpunit.result.cache
