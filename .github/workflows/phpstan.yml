@@ -1,4 +1,4 @@
-name: PhpCodefix
+name: PhpStan
 
 on: [ push ]
 
