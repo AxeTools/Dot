@@ -7,38 +7,40 @@ use AxeTools\Utilities\Dot\Dot;
 class AppendTest extends DotBase {
     /**
      * @test
+     *
      * @dataProvider appendDataProvider
      *
-     * @param $key
-     * @param $value
-     * @param $expected
+     * @param array<mixed>     $array
+     * @param non-empty-string $key
+     * @param array<mixed>     $expected
      *
      * @return void
      */
-    public function append(array $array, $key, $value, $expected) {
+    public function append(array $array, string $key, mixed $value, array $expected) {
         Dot::append($array, $key, $value);
         $this->assertEquals($expected, $array);
     }
 
     /**
      * @test
+     *
      * @dataProvider appendDataProvider
      *
-     * @param $key
-     * @param $value
-     * @param $expected
+     * @param array<mixed>     $array
+     * @param non-empty-string $key
+     * @param array<mixed>     $expected
      *
      * @return void
      */
-    public function appendFunction(array $array, $key, $value, $expected) {
+    public function appendFunction(array $array, string $key, mixed $value, array $expected) {
         dotAppend($array, $key, $value);
         $this->assertEquals($expected, $array);
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
-    public static function appendDataProvider() {
+    public static function appendDataProvider(): array {
         return [
             'append to array' => [['test' => ['test1']], 'test', 'test2', ['test' => ['test1', 'test2']]],
             'append to string value' => [['test' => 'test1'], 'test', 'test2', ['test' => ['test1', 'test2']]],

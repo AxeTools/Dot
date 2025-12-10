@@ -3,37 +3,36 @@
 namespace Tests\AxeTools\Utilities\Dot;
 
 use AxeTools\Utilities\Dot\Dot;
-use InvalidArgumentException;
 
 class SetTest extends DotBase {
     /**
      * @test
+     *
      * @dataProvider setDataProvider
      *
-     * @param mixed[]          $test
+     * @param array<mixed>     $test
      * @param non-empty-string $key
-     * @param mixed            $value
-     * @param mixed[]          $expected
+     * @param array<mixed>     $expected
      *
      * @return void
      */
-    public function set(array $test, $key, $value, $expected) {
+    public function set(array $test, string $key, mixed $value, array $expected) {
         Dot::set($test, $key, $value);
         $this->assertEquals($expected, $test);
     }
 
     /**
      * @test
+     *
      * @dataProvider setDataProvider
      *
-     * @param mixed[]          $test
+     * @param array<mixed>     $test
      * @param non-empty-string $key
-     * @param mixed            $value
-     * @param mixed[]          $expected
+     * @param array<mixed>     $expected
      *
      * @return void
      */
-    public function setCustomDelimiter(array $test, $key, $value, array $expected) {
+    public function setCustomDelimiter(array $test, string $key, mixed $value, array $expected) {
         $custom_delimiter = '~';
         $key = str_replace('.', $custom_delimiter, $key);
 
@@ -47,42 +46,43 @@ class SetTest extends DotBase {
      * @param non-empty-string $deliminator
      *
      * @return void
+     *
      * @dataProvider invalidDelimiterDataProvider
      */
-    public function setEmptyStringFailure($deliminator) {
-        $this->expectException(InvalidArgumentException::class);
+    public function setEmptyStringFailure(string $deliminator) {
+        $this->expectException(\InvalidArgumentException::class);
         $test = [];
         Dot::set($test, 'test.test', 'test', $deliminator);
     }
 
     /**
      * @test
+     *
      * @dataProvider setDataProvider
      *
-     * @param mixed[]          $test
+     * @param array<mixed>     $test
      * @param non-empty-string $key
-     * @param mixed            $value
-     * @param mixed[]          $expected
+     * @param array<mixed>     $expected
      *
      * @return void
      */
-    public function setFunction(array $test, $key, $value, $expected) {
+    public function setFunction(array $test, string $key, mixed $value, array $expected) {
         dotSet($test, $key, $value);
         $this->assertEquals($expected, $test);
     }
 
     /**
      * @test
+     *
      * @dataProvider setDataProvider
      *
-     * @param mixed[]          $test
+     * @param array<mixed>     $test
      * @param non-empty-string $key
-     * @param mixed            $value
-     * @param mixed[]          $expected
+     * @param array<mixed>     $expected
      *
      * @return void
      */
-    public function setFunctionCustomDelimiter(array $test, $key, $value, array $expected) {
+    public function setFunctionCustomDelimiter(array $test, string $key, mixed $value, array $expected) {
         $custom_delimiter = '~';
         $key = str_replace('.', $custom_delimiter, $key);
 
@@ -96,18 +96,19 @@ class SetTest extends DotBase {
      * @param non-empty-string $deliminator
      *
      * @return void
+     *
      * @dataProvider invalidDelimiterDataProvider
      */
-    public function setFunctionEmptyStringFailure($deliminator) {
-        $this->expectException(InvalidArgumentException::class);
+    public function setFunctionEmptyStringFailure(string $deliminator) {
+        $this->expectException(\InvalidArgumentException::class);
         $test = [];
         dotSet($test, 'test.test', 'test', $deliminator);
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
-    public static function setDataProvider() {
+    public static function setDataProvider(): array {
         return [
             'single dimension set' => [['test' => 'test'], 'test', 'new', ['test' => 'new']],
             'single dimension create' => [[], 'test', 'new', ['test' => 'new']],

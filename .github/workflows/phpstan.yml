@@ -26,4 +26,4 @@ jobs:
         uses: ramsey/composer-install@v3
 
       - name: Run Tests
-        run: composer run-script codefix-ci
+        run: composer run-script phpstan-ci

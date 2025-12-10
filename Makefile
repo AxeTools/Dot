@@ -30,33 +30,33 @@ down:
 #
 bash: up
 	@echo "##### Dev php Container Bash Prompt #####"
-	@(docker compose exec php56 bash)
+	@(docker compose exec php80 bash)
 
 #
 # Execute tests against the dev php container
 #
 tests: up
 	@echo "##### Dev php Container Tests #####"
-	@(docker compose exec php56 composer tests)
+	@(docker compose exec php80 composer tests)
 
 
 coverage: up
 	@echo "##### Dev php Container Coverage #####"
-	@(docker compose exec php56 composer phpunit-coverage)
+	@(docker compose exec php80 composer phpunit-coverage)
 
 #
 # Install the composer assets
 #
 install: up
 	@echo "##### Installing Composer Dependencies #####"
-	@(docker compose exec php56 composer update)
+	@(docker compose exec php80 composer update)
 
 #
 # Build the dev docker file
 #
 build:
 	@echo "##### Building Production Containers #####"
-	@docker compose build php56
+	@docker compose build php80
 
 #
 # build and bring up the dev containers and install assets

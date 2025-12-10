@@ -7,38 +7,42 @@ use AxeTools\Utilities\Dot\Dot;
 class DeleteTest extends DotBase {
     /**
      * @test
+     *
      * @dataProvider deleteDataProvider
      *
-     * @param        $key
-     * @param        $expected
-     * @param string $delimiter
+     * @param array<mixed>     $array
+     * @param non-empty-string $key
+     * @param array<mixed>     $expected
+     * @param non-empty-string $delimiter
      *
      * @return void
      */
-    public function dotDelete(array $array, $key, $expected, $delimiter = Dot::DEFAULT_DELIMITER) {
+    public function dotDelete(array $array, string $key, array $expected, string $delimiter = Dot::DEFAULT_DELIMITER) {
         Dot::delete($array, $key, $delimiter);
         $this->assertEquals($expected, $array);
     }
 
     /**
      * @test
+     *
      * @dataProvider deleteDataProvider
      *
-     * @param        $key
-     * @param        $expected
-     * @param string $delimiter
+     * @param array<mixed>     $array
+     * @param non-empty-string $key
+     * @param array<mixed>     $expected
+     * @param non-empty-string $delimiter
      *
      * @return void
      */
-    public function dotDeleteFunction(array $array, $key, $expected, $delimiter = Dot::DEFAULT_DELIMITER) {
+    public function dotDeleteFunction(array $array, string $key, array $expected, string $delimiter = Dot::DEFAULT_DELIMITER) {
         dotDelete($array, $key, $delimiter);
         $this->assertEquals($expected, $array);
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
-    public static function deleteDataProvider() {
+    public static function deleteDataProvider(): array {
         return [
             'delete a value' => [['a' => ['b' => ['c' => 'd']]], 'a.b.c', ['a' => ['b' => []]]],
             'delete a value in set' => [['a' => ['b' => ['c' => 'd', 'e' => 'f']]], 'a.b.e', ['a' => ['b' => ['c' => 'd']]]],
