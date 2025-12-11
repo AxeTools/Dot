@@ -3,13 +3,11 @@
 namespace Tests\AxeTools\Utilities\Dot;
 
 use AxeTools\Utilities\Dot\Dot;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class IncrementTest extends DotBase {
     /**
-     * @test
-     *
-     * @dataProvider incrementorDataProvider
-     *
      * @param array<mixed>     $array
      * @param non-empty-string $key
      * @param float|int        $incrementor
@@ -19,6 +17,8 @@ class IncrementTest extends DotBase {
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('incrementorDataProvider')]
     public function increment(array $array, $key, $incrementor, $default, $expected, $endArray) {
         $actual = Dot::increment($array, $key, $incrementor, $default);
 
@@ -27,16 +27,14 @@ class IncrementTest extends DotBase {
     }
 
     /**
-     * @test
-     *
-     * @dataProvider incrementOverLoopDataProvider
-     *
      * @param array<mixed>     $array
      * @param non-empty-string $key
      * @param array<mixed>     $endArray
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('incrementOverLoopDataProvider')]
     public function incrementOverLoop(array $array, string $key, float|int $incrementor, float|int $default, int $loopCount, float|int $expected, array $endArray) {
         $result = -1000000;
 
@@ -49,16 +47,14 @@ class IncrementTest extends DotBase {
     }
 
     /**
-     * @test
-     *
-     * @dataProvider incrementorDataProvider
-     *
      * @param array<mixed>     $array
      * @param non-empty-string $key
      * @param array<mixed>     $endArray
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('incrementorDataProvider')]
     public function incrementFunction(array $array, string $key, float|int $incrementor, float|int $default, float|int $expected, array $endArray) {
         $actual = dotIncrement($array, $key, $incrementor, $default);
 
@@ -67,16 +63,14 @@ class IncrementTest extends DotBase {
     }
 
     /**
-     * @test
-     *
-     * @dataProvider incrementOverLoopDataProvider
-     *
      * @param array<mixed>     $array
      * @param non-empty-string $key
      * @param array<mixed>     $endArray
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('incrementOverLoopDataProvider')]
     public function incrementFunctionOverLoop(array $array, string $key, float|int $incrementor, float|int $default, int $loopCount, float|int $expected, array $endArray) {
         $result = -1000000;
         foreach (range(1, $loopCount) as $_) {

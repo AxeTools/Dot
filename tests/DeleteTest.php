@@ -3,13 +3,11 @@
 namespace Tests\AxeTools\Utilities\Dot;
 
 use AxeTools\Utilities\Dot\Dot;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class DeleteTest extends DotBase {
     /**
-     * @test
-     *
-     * @dataProvider deleteDataProvider
-     *
      * @param array<mixed>     $array
      * @param non-empty-string $key
      * @param array<mixed>     $expected
@@ -17,16 +15,14 @@ class DeleteTest extends DotBase {
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('deleteDataProvider')]
     public function dotDelete(array $array, string $key, array $expected, string $delimiter = Dot::DEFAULT_DELIMITER) {
         Dot::delete($array, $key, $delimiter);
         $this->assertEquals($expected, $array);
     }
 
     /**
-     * @test
-     *
-     * @dataProvider deleteDataProvider
-     *
      * @param array<mixed>     $array
      * @param non-empty-string $key
      * @param array<mixed>     $expected
@@ -34,6 +30,8 @@ class DeleteTest extends DotBase {
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('deleteDataProvider')]
     public function dotDeleteFunction(array $array, string $key, array $expected, string $delimiter = Dot::DEFAULT_DELIMITER) {
         dotDelete($array, $key, $delimiter);
         $this->assertEquals($expected, $array);

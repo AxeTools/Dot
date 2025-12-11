@@ -3,18 +3,18 @@
 namespace Tests\AxeTools\Utilities\Dot;
 
 use AxeTools\Utilities\Dot\Dot;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class FlattenTest extends DotBase {
     /**
-     * @test
-     *
-     * @dataProvider flattenDataProvider
-     *
      * @param array<mixed>                   $test
      * @param array<non-empty-string, mixed> $expected
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('flattenDataProvider')]
     public function flatten(array $test, array $expected) {
         $actual = Dot::flatten($test);
         $this->assertEquals($expected, $actual);
@@ -26,16 +26,14 @@ class FlattenTest extends DotBase {
     }
 
     /**
-     * @test
-     *
-     * @dataProvider flattenWithCustomDelimitersDataProvider
-     *
      * @param non-empty-string $delimiter
      * @param array<mixed>     $test
      * @param array<mixed>     $expected
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('flattenWithCustomDelimitersDataProvider')]
     public function flattenWithCustomDelimiters(string $delimiter, array $test, array $expected) {
         $actual = Dot::flatten($test, $delimiter);
         $this->assertEquals($expected, $actual);
@@ -47,29 +45,25 @@ class FlattenTest extends DotBase {
     }
 
     /**
-     * @test
-     *
      * @param non-empty-string $deliminator
-     *
-     * @dataProvider invalidDelimiterDataProvider
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('invalidDelimiterDataProvider')]
     public function flattenEmptyStringFailure(string $deliminator) {
         $this->expectException(\InvalidArgumentException::class);
         Dot::flatten([], $deliminator);
     }
 
     /**
-     * @test
-     *
-     * @dataProvider flattenDataProvider
-     *
      * @param array<mixed>                   $test
      * @param array<non-empty-string, mixed> $expected
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('flattenDataProvider')]
     public function flattenFunction(array $test, array $expected) {
         $actual = dotFlatten($test);
         $this->assertEquals($expected, $actual);
@@ -81,16 +75,14 @@ class FlattenTest extends DotBase {
     }
 
     /**
-     * @test
-     *
-     * @dataProvider flattenWithCustomDelimitersDataProvider
-     *
      * @param non-empty-string $delimiter
      * @param array<mixed>     $test
      * @param array<mixed>     $expected
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('flattenWithCustomDelimitersDataProvider')]
     public function flattenFunctionWithCustomDelimiters(string $delimiter, array $test, array $expected) {
         $actual = dotFlatten($test, $delimiter);
         $this->assertEquals($expected, $actual);
@@ -102,14 +94,12 @@ class FlattenTest extends DotBase {
     }
 
     /**
-     * @test
-     *
      * @param non-empty-string $deliminator
-     *
-     * @dataProvider invalidDelimiterDataProvider
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('invalidDelimiterDataProvider')]
     public function flattenFunctionEmptyStringFailure(string $deliminator) {
         $this->expectException(\InvalidArgumentException::class);
         dotFlatten([], $deliminator);

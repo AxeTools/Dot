@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning].
 
 ### Changed
 
-* minimum php version is 8.0
+* minimum php version is 8.1
 * All methods have been updated to be typed
 
 ## 1.0.0
