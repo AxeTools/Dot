@@ -47,7 +47,12 @@
         "codefix-ci": "php-cs-fixer fix --diff --dry-run --verbose --config=.php-cs-fixer.dist.php",
         "phpunit-coverage" : "phpunit --coverage-html build/",
         "phpstan" : "phpstan analyze src tests --level 9",
-        "phpstan-ci" : "phpstan analyze src tests --level 9"
+        "phpstan-ci" : "phpstan analyze src tests --level 9",
+        "doit" : [
+            "@codefix",
+            "@phpstan",
+            "@phpunit"
+        ]
     },
     "scripts-descriptions": {
         "codefix": "Run the Php-cf-fixer",
@@ -56,6 +61,7 @@
         "phpstan-ci" : "Run the PHPStan code static analysis tool for CI",
         "phpunit": "Run PHPUnit tests",
         "phpunit-coverage": "Generate the test coverage report",
-        "tests": "Run the tests"
+        "tests": "Run the tests",
+        "doit": "Run everything!!  EVERYTHING!!"
     }
 }

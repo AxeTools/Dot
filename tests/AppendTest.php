@@ -50,6 +50,18 @@ class AppendTest extends DotBase {
             'append to nothing' => [[], 'test', 'test1', ['test' => ['test1']]],
             'append to deep array' => [['test' => ['test1' => ['test2' => ['test3']]]], 'test.test1.test2', 'test4', ['test' => ['test1' => ['test2' => ['test3', 'test4']]]]],
             'append to key value array' => [['test' => ['test1' => ['test3' => 'test4']]], 'test.test1', 'test5', ['test' => ['test1' => ['test3' => 'test4', 'test5']]]],
+            'append an array to the array' => [
+                ['test' => ['test1']],
+                'test.test1',
+                ['test2' => 'test3'],
+                ['test' => [0 => 'test1', 'test1' => ['test2' => 'test3']]],
+            ],
+            'append an array to the array as a collection' => [
+                ['test' => ['test1']],
+                'test.test1',
+                [['test2' => 'test3']],
+                ['test' => [0 => 'test1', 'test1' => [0 => ['test2' => 'test3']]]],
+            ],
         ];
     }
 }
