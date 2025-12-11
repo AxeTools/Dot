@@ -3,35 +3,33 @@
 namespace Tests\AxeTools\Utilities\Dot;
 
 use AxeTools\Utilities\Dot\Dot;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class AppendTest extends DotBase {
     /**
-     * @test
-     *
-     * @dataProvider appendDataProvider
-     *
      * @param array<mixed>     $array
      * @param non-empty-string $key
      * @param array<mixed>     $expected
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('appendDataProvider')]
     public function append(array $array, string $key, mixed $value, array $expected) {
         Dot::append($array, $key, $value);
         $this->assertEquals($expected, $array);
     }
 
     /**
-     * @test
-     *
-     * @dataProvider appendDataProvider
-     *
      * @param array<mixed>     $array
      * @param non-empty-string $key
      * @param array<mixed>     $expected
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('appendDataProvider')]
     public function appendFunction(array $array, string $key, mixed $value, array $expected) {
         dotAppend($array, $key, $value);
         $this->assertEquals($expected, $array);

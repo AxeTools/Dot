@@ -3,35 +3,33 @@
 namespace Tests\AxeTools\Utilities\Dot;
 
 use AxeTools\Utilities\Dot\Dot;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class CountTest extends DotBase {
     /**
-     * @test
-     *
-     * @dataProvider dotCountDataProvider
-     *
      * @param array<mixed>     $test
      * @param non-empty-string $key
      * @param non-empty-string $delimiter
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('dotCountDataProvider')]
     public function dotCount(array $test, string $key, int $expected, string $delimiter = Dot::DEFAULT_DELIMITER, int $return = Dot::ZERO_ON_NON_ARRAY) {
         $actual = Dot::count($test, $key, $delimiter, $return);
         $this->assertEquals($expected, $actual);
     }
 
     /**
-     * @test
-     *
-     * @dataProvider dotCountDataProvider
-     *
      * @param array<mixed>     $test
      * @param non-empty-string $key
      * @param non-empty-string $delimiter
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('dotCountDataProvider')]
     public function dotCountFunction(array $test, string $key, int $expected, string $delimiter = Dot::DEFAULT_DELIMITER, int $return = Dot::ZERO_ON_NON_ARRAY) {
         $actual = dotCount($test, $key, $delimiter, $return);
         $this->assertEquals($expected, $actual);

@@ -3,35 +3,33 @@
 namespace Tests\AxeTools\Utilities\Dot;
 
 use AxeTools\Utilities\Dot\Dot;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class SetTest extends DotBase {
     /**
-     * @test
-     *
-     * @dataProvider setDataProvider
-     *
      * @param array<mixed>     $test
      * @param non-empty-string $key
      * @param array<mixed>     $expected
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('setDataProvider')]
     public function set(array $test, string $key, mixed $value, array $expected) {
         Dot::set($test, $key, $value);
         $this->assertEquals($expected, $test);
     }
 
     /**
-     * @test
-     *
-     * @dataProvider setDataProvider
-     *
      * @param array<mixed>     $test
      * @param non-empty-string $key
      * @param array<mixed>     $expected
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('setDataProvider')]
     public function setCustomDelimiter(array $test, string $key, mixed $value, array $expected) {
         $custom_delimiter = '~';
         $key = str_replace('.', $custom_delimiter, $key);
@@ -41,14 +39,12 @@ class SetTest extends DotBase {
     }
 
     /**
-     * @test
-     *
      * @param non-empty-string $deliminator
      *
      * @return void
-     *
-     * @dataProvider invalidDelimiterDataProvider
      */
+    #[Test]
+    #[DataProvider('invalidDelimiterDataProvider')]
     public function setEmptyStringFailure(string $deliminator) {
         $this->expectException(\InvalidArgumentException::class);
         $test = [];
@@ -56,32 +52,28 @@ class SetTest extends DotBase {
     }
 
     /**
-     * @test
-     *
-     * @dataProvider setDataProvider
-     *
      * @param array<mixed>     $test
      * @param non-empty-string $key
      * @param array<mixed>     $expected
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('setDataProvider')]
     public function setFunction(array $test, string $key, mixed $value, array $expected) {
         dotSet($test, $key, $value);
         $this->assertEquals($expected, $test);
     }
 
     /**
-     * @test
-     *
-     * @dataProvider setDataProvider
-     *
      * @param array<mixed>     $test
      * @param non-empty-string $key
      * @param array<mixed>     $expected
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('setDataProvider')]
     public function setFunctionCustomDelimiter(array $test, string $key, mixed $value, array $expected) {
         $custom_delimiter = '~';
         $key = str_replace('.', $custom_delimiter, $key);
@@ -91,14 +83,12 @@ class SetTest extends DotBase {
     }
 
     /**
-     * @test
-     *
      * @param non-empty-string $deliminator
      *
      * @return void
-     *
-     * @dataProvider invalidDelimiterDataProvider
      */
+    #[Test]
+    #[DataProvider('invalidDelimiterDataProvider')]
     public function setFunctionEmptyStringFailure(string $deliminator) {
         $this->expectException(\InvalidArgumentException::class);
         $test = [];

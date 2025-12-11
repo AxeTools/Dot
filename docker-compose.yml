@@ -1,6 +1,6 @@
 
 services:
-  php80:
+  php81:
     build:
       context: .
       dockerfile: Dockerfile
