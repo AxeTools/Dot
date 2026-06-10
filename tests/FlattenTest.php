@@ -38,6 +38,10 @@ class FlattenTest extends DotBase {
         $actual = Dot::flatten($test, $delimiter);
         $this->assertEquals($expected, $actual);
         $reset = [];
+        /**
+         * @var non-empty-string $key
+         * @var mixed            $value
+         */
         foreach ($actual as $key => $value) {
             Dot::set($reset, $key, $value, $delimiter);
         }
@@ -87,6 +91,10 @@ class FlattenTest extends DotBase {
         $actual = dotFlatten($test, $delimiter);
         $this->assertEquals($expected, $actual);
         $reset = [];
+        /**
+         * @var non-empty-string $key
+         * @var mixed            $value
+         */
         foreach ($actual as $key => $value) {
             dotSet($reset, $key, $value, $delimiter);
         }
