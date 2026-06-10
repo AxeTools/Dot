@@ -17,6 +17,7 @@ use AxeTools\Utilities\Dot\Dot;
  * @param mixed|null       $default     optional, the default value to return if there is no value set in the key position
  *                                      of the array
  * @param non-empty-string $delimiter   optional, the delimiter used in the string key to break apart the key values
+ * @param non-empty-string $wildcard    optional, the delimiter used in the string key to break apart the key values
  *
  * @return array|mixed|null
  *
@@ -25,9 +26,9 @@ use AxeTools\Utilities\Dot\Dot;
  * @since 1.0.0
  */
 function dotGet(
-    array $searchArray, string $searchKey, mixed $default = null, string $delimiter = Dot::DEFAULT_DELIMITER,
+    array $searchArray, string $searchKey, mixed $default = null, string $delimiter = Dot::DEFAULT_DELIMITER, string $wildcard = Dot::DEFAULT_WILDCARD,
 ): mixed {
-    return Dot::get($searchArray, $searchKey, $default, $delimiter);
+    return Dot::get($searchArray, $searchKey, $default, $delimiter, $wildcard);
 }
 
 /**
@@ -35,7 +36,7 @@ function dotGet(
  * created in the array.
  *
  * @param array<mixed>     $setArray
- * @param string           $setKey    a string representation of a nested key value delimited by '.' or the passed
+ * @param non-empty-string $setKey    a string representation of a nested key value delimited by '.' or the passed
  *                                    delimiters
  * @param array|mixed|null $value     The value to set in the array at the passed key location
  * @param non-empty-string $delimiter optional, the delimiter used in the string key to break apart the key values
