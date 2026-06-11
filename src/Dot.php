@@ -2,8 +2,6 @@
 
 namespace AxeTools\Utilities\Dot;
 
-use InvalidArgumentException;
-
 /**
  * Get and set and check values in an array using dot notation or any other optional key separator.
  */
@@ -134,14 +132,10 @@ final class Dot {
     public static function increment(array &$incrementArray, string $incrementKey, float|int $incrementor = 1, float|int $default = 0, string $delimiter = self::DEFAULT_DELIMITER): float|int {
         self::validateDelimiter($delimiter);
 
-        if (!is_numeric($incrementor)) {
-            throw new InvalidArgumentException('The provided incrementor is not a numeric value');
-        }
-
         $initial_value = self::get($incrementArray, $incrementKey, $default, $delimiter);
 
         if (!is_numeric($initial_value)) {
-            throw new InvalidArgumentException("The value at the key position '{$incrementKey}' is not a numeric value");
+            throw new \InvalidArgumentException("The value at the key position '{$incrementKey}' is not a numeric value");
         }
 
         $result = $initial_value + $incrementor;

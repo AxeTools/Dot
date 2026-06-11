@@ -24,14 +24,18 @@ class DeleteTest extends DotBase {
 
     /**
      * @test
+     *
      * @dataProvider deleteCustomDelimiterDataProvider
      *
-     * @param        $key
-     * @param        $expected
-     * @param string $delimiter
+     * @param array<mixed>     $array
+     * @param non-empty-string $key
+     * @param array<mixed>     $expected
+     * @param non-empty-string $delimiter
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('deleteCustomDelimiterDataProvider')]
     public function dotDeleteCustomDelimiter(array $array, $key, $expected, $delimiter = '~') {
         Dot::delete($array, $key, $delimiter);
         $this->assertEquals($expected, $array);
@@ -54,14 +58,18 @@ class DeleteTest extends DotBase {
 
     /**
      * @test
+     *
      * @dataProvider deleteCustomDelimiterDataProvider
      *
-     * @param        $key
-     * @param        $expected
-     * @param string $delimiter
+     * @param array<mixed>     $array
+     * @param non-empty-string $key
+     * @param array<mixed>     $expected
+     * @param non-empty-string $delimiter
      *
      * @return void
      */
+    #[Test]
+    #[DataProvider('deleteCustomDelimiterDataProvider')]
     public function dotDeleteFunctionCustomDelimiter(array $array, $key, $expected, $delimiter = '~') {
         dotDelete($array, $key, $delimiter);
         $this->assertEquals($expected, $array);
