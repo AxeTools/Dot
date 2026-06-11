@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog]
 and this project adheres to [Semantic Versioning].
 
+## 1.0.1
+
+This is a refactor release for enhanced performance.  The interface is unchanged the changes were purely to the implementation details.
+
+### FIXED
+* `Dot::delete()` corrected custom delimiter behavior
+* `dotDetele()` corrected custom delimiter behavior
+
 ## 1.0.0
 
 ### Added
