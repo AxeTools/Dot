@@ -155,9 +155,9 @@ class FlattenTest extends DotBase {
                 ['test1--test1' => 'test1', 'test2' => 'test2'],
             ],
             'multi nested items multiple non string keys' => [
-                '*',
+                '|',
                 ['test1' => ['test1' => 'test1'], 'test2' => ['test2', 'test2a']],
-                ['test1*test1' => 'test1', 'test2*0' => 'test2', 'test2*1' => 'test2a'],
+                ['test1|test1' => 'test1', 'test2|0' => 'test2', 'test2|1' => 'test2a'],
             ],
             'deep nested items multiple non string keys' => [
                 '~',
