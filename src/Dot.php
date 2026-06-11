@@ -74,7 +74,7 @@ final class Dot {
 
         foreach ($keys as $key) {
             if (!isset($current[$key]) || !is_array($current[$key])) {
-                $current[$key] = array();
+                $current[$key] = [];
             }
 
             $current = &$current[$key];
@@ -192,9 +192,9 @@ final class Dot {
      */
     public static function append(array &$appendArray, $appendKey, $value, $delimiter = self::DEFAULT_DELIMITER) {
         self::validateDelimiter($delimiter);
-        $current = self::get($appendArray, $appendKey, array(), $delimiter);
-        $current = (is_array($current)) ? $current : array($current);
-        $value = (is_array($value)) ? $value : array($value);
+        $current = self::get($appendArray, $appendKey, [], $delimiter);
+        $current = (is_array($current)) ? $current : [$current];
+        $value = (is_array($value)) ? $value : [$value];
 
         self::set($appendArray, $appendKey, array_merge($current, $value), $delimiter);
     }
@@ -247,7 +247,7 @@ final class Dot {
     public static function flatten(array $array, $delimiter = self::DEFAULT_DELIMITER, $prepend = '') {
         self::validateDelimiter($delimiter);
 
-        $flattened = array();
+        $flattened = [];
         self::flattenRecursive($array, $flattened, $delimiter, $prepend);
 
         return $flattened;
@@ -296,17 +296,17 @@ final class Dot {
      *
      * @param mixed[] $array
      * @param mixed[] $result
-     * @param string $delimiter
-     * @param string $prepend
+     * @param string  $delimiter
+     * @param string  $prepend
      *
      * @return void
      */
     private static function flattenRecursive(array $array, array &$result, $delimiter, $prepend) {
         foreach ($array as $key => $value) {
-            $newKey = $prepend . $key;
+            $newKey = $prepend.$key;
 
             if (is_array($value) && !empty($value)) {
-                self::flattenRecursive($value, $result, $delimiter, $newKey . $delimiter);
+                self::flattenRecursive($value, $result, $delimiter, $newKey.$delimiter);
             } else {
                 $result[$newKey] = $value;
             }

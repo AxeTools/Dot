@@ -9,7 +9,6 @@ class DeleteTest extends DotBase {
      * @test
      * @dataProvider deleteDataProvider
      *
-     * @param array  $array
      * @param        $key
      * @param        $expected
      * @param string $delimiter
@@ -21,12 +20,10 @@ class DeleteTest extends DotBase {
         $this->assertEquals($expected, $array);
     }
 
-
     /**
      * @test
      * @dataProvider deleteCustomDelimiterDataProvider
      *
-     * @param array  $array
      * @param        $key
      * @param        $expected
      * @param string $delimiter
@@ -42,7 +39,6 @@ class DeleteTest extends DotBase {
      * @test
      * @dataProvider deleteDataProvider
      *
-     * @param array  $array
      * @param        $key
      * @param        $expected
      * @param string $delimiter
@@ -58,7 +54,6 @@ class DeleteTest extends DotBase {
      * @test
      * @dataProvider deleteCustomDelimiterDataProvider
      *
-     * @param array  $array
      * @param        $key
      * @param        $expected
      * @param string $delimiter
