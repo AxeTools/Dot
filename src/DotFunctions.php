@@ -47,7 +47,7 @@ function dotSet(array &$setArray, $setKey, $value, $delimiter = Dot::DEFAULT_DEL
 }
 
 /**
- * Does the array have the passed dot notation key.
+ * Does the array contain the passed dot notation key?
  *
  * @param mixed[]          $searchArray
  * @param non-empty-string $searchKey   a string representation of a nested key value delimited by '.' or the passed delimiters

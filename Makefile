@@ -56,7 +56,7 @@ install: up
 #
 build:
 	@echo "##### Building Production Containers #####"
-	@docker compose build php56
+	@(docker compose build php56)
 
 #
 # build and bring up the dev containers and install assets

@@ -35,22 +35,19 @@ final class Dot {
      */
     public static function get(array $searchArray, $searchKey, $default = null, $delimiter = self::DEFAULT_DELIMITER) {
         self::validateDelimiter($delimiter);
+
         $keys = explode($delimiter, $searchKey);
-        $key_pos = array_shift($keys);
+        $current = $searchArray;
 
-        if (array_key_exists($key_pos, $searchArray)) {
-            if (is_array($searchArray[$key_pos]) && count($keys)) {
-                return self::get($searchArray[$key_pos], implode($delimiter, $keys), $default, $delimiter);
-            } else {
-                if (count($keys)) {
-                    return $default;
-                }
-
-                return $searchArray[$key_pos];
+        foreach ($keys as $key) {
+            if (!is_array($current) || !array_key_exists($key, $current)) {
+                return $default;
             }
-        } else {
-            return $default;
+
+            $current = $current[$key];
         }
+
+        return $current;
     }
 
     /**
@@ -70,21 +67,24 @@ final class Dot {
      */
     public static function set(array &$setArray, $setKey, $value, $delimiter = self::DEFAULT_DELIMITER) {
         self::validateDelimiter($delimiter);
-        $keys = explode($delimiter, $setKey);
-        $key_pos = array_shift($keys);
 
-        if (count($keys)) {
-            if (!array_key_exists($key_pos, $setArray) || !is_array($setArray[$key_pos])) {
-                $setArray[$key_pos] = [];
+        $keys = explode($delimiter, $setKey);
+        $current = &$setArray;
+        $last = array_pop($keys);
+
+        foreach ($keys as $key) {
+            if (!isset($current[$key]) || !is_array($current[$key])) {
+                $current[$key] = array();
             }
-            self::set($setArray[$key_pos], implode($delimiter, $keys), $value, $delimiter);
-        } else {
-            $setArray[$key_pos] = $value;
+
+            $current = &$current[$key];
         }
+
+        $current[$last] = $value;
     }
 
     /**
-     * Does the array have the passed dot notation key.
+     * Does the array contain the passed dot notation key?
      *
      * @param mixed[]          $searchArray
      * @param non-empty-string $searchKey   a string representation of a nested key value delimited by '.' or the passed delimiters
@@ -98,9 +98,19 @@ final class Dot {
      */
     public static function has(array $searchArray, $searchKey, $delimiter = self::DEFAULT_DELIMITER) {
         self::validateDelimiter($delimiter);
-        $v = self::get($searchArray, $searchKey, "\0\0", $delimiter);
 
-        return "\0\0" !== $v; // if the default value is returned then the key was not found
+        $keys = explode($delimiter, $searchKey);
+        $current = $searchArray;
+
+        foreach ($keys as $key) {
+            if (!is_array($current) || !array_key_exists($key, $current)) {
+                return false;
+            }
+
+            $current = $current[$key];
+        }
+
+        return true;
     }
 
     /**
@@ -122,17 +132,21 @@ final class Dot {
      */
     public static function increment(array &$incrementArray, $incrementKey, $incrementor = 1, $default = 0, $delimiter = self::DEFAULT_DELIMITER) {
         self::validateDelimiter($delimiter);
+
         if (!is_numeric($incrementor)) {
             throw new InvalidArgumentException('The provided incrementor is not a numeric value');
         }
+
         $initial_value = self::get($incrementArray, $incrementKey, $default, $delimiter);
+
         if (!is_numeric($initial_value)) {
             throw new InvalidArgumentException("The value at the key position '{$incrementKey}' is not a numeric value");
         }
-        self::set($incrementArray, $incrementKey,
-            $initial_value + $incrementor, $delimiter);
 
-        return self::get($incrementArray, $incrementKey, null, $delimiter);
+        $result = $initial_value + $incrementor;
+        self::set($incrementArray, $incrementKey, $result, $delimiter);
+
+        return $result;
     }
 
     /**
@@ -178,9 +192,10 @@ final class Dot {
      */
     public static function append(array &$appendArray, $appendKey, $value, $delimiter = self::DEFAULT_DELIMITER) {
         self::validateDelimiter($delimiter);
-        $current = self::get($appendArray, $appendKey, [], $delimiter);
-        $current = (is_array($current)) ? $current : [$current];
-        $value = (is_array($value)) ? $value : [$value];
+        $current = self::get($appendArray, $appendKey, array(), $delimiter);
+        $current = (is_array($current)) ? $current : array($current);
+        $value = (is_array($value)) ? $value : array($value);
+
         self::set($appendArray, $appendKey, array_merge($current, $value), $delimiter);
     }
 
@@ -198,20 +213,22 @@ final class Dot {
     public static function delete(array &$deleteArray, $deleteKey, $delimiter = self::DEFAULT_DELIMITER) {
         self::validateDelimiter($delimiter);
 
-        if (!self::has($deleteArray, $deleteKey)) {
-            return;
-        }
-
         $keys = explode($delimiter, $deleteKey);
         $final = array_pop($keys);
+
         $current = &$deleteArray;
-        foreach ($keys as $_key) {
-            if (is_array($current[$_key])) {
-                $current = &$current[$_key];
+
+        foreach ($keys as $key) {
+            if (!isset($current[$key]) || !is_array($current[$key])) {
+                return;
             }
+
+            $current = &$current[$key];
         }
 
-        unset($current[$final]);
+        if (array_key_exists($final, $current)) {
+            unset($current[$final]);
+        }
     }
 
     /**
@@ -229,14 +246,9 @@ final class Dot {
      */
     public static function flatten(array $array, $delimiter = self::DEFAULT_DELIMITER, $prepend = '') {
         self::validateDelimiter($delimiter);
-        $flattened = [];
-        foreach ($array as $key => $value) {
-            if (is_array($value) && !empty($value)) {
-                $flattened = array_merge($flattened, self::flatten($value, $delimiter, $prepend.$key.$delimiter));
-            } else {
-                $flattened[$prepend.$key] = $value;
-            }
-        }
+
+        $flattened = array();
+        self::flattenRecursive($array, $flattened, $delimiter, $prepend);
 
         return $flattened;
     }
@@ -277,5 +289,27 @@ final class Dot {
      */
     private static function InvalidDelimiterException($message) {
         throw new InvalidArgumentException($message.' Delimiter is not valid');
+    }
+
+    /**
+     * Internal flatten accumulator.
+     *
+     * @param mixed[] $array
+     * @param mixed[] $result
+     * @param string $delimiter
+     * @param string $prepend
+     *
+     * @return void
+     */
+    private static function flattenRecursive(array $array, array &$result, $delimiter, $prepend) {
+        foreach ($array as $key => $value) {
+            $newKey = $prepend . $key;
+
+            if (is_array($value) && !empty($value)) {
+                self::flattenRecursive($value, $result, $delimiter, $newKey . $delimiter);
+            } else {
+                $result[$newKey] = $value;
+            }
+        }
     }
 }
