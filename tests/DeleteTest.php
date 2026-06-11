@@ -9,6 +9,7 @@ class DeleteTest extends DotBase {
      * @test
      * @dataProvider deleteDataProvider
      *
+     * @param array  $array
      * @param        $key
      * @param        $expected
      * @param string $delimiter
@@ -20,10 +21,28 @@ class DeleteTest extends DotBase {
         $this->assertEquals($expected, $array);
     }
 
+
+    /**
+     * @test
+     * @dataProvider deleteCustomDelimiterDataProvider
+     *
+     * @param array  $array
+     * @param        $key
+     * @param        $expected
+     * @param string $delimiter
+     *
+     * @return void
+     */
+    public function dotDeleteCustomDelimiter(array $array, $key, $expected, $delimiter = '~') {
+        Dot::delete($array, $key, $delimiter);
+        $this->assertEquals($expected, $array);
+    }
+
     /**
      * @test
      * @dataProvider deleteDataProvider
      *
+     * @param array  $array
      * @param        $key
      * @param        $expected
      * @param string $delimiter
@@ -31,6 +50,22 @@ class DeleteTest extends DotBase {
      * @return void
      */
     public function dotDeleteFunction(array $array, $key, $expected, $delimiter = Dot::DEFAULT_DELIMITER) {
+        dotDelete($array, $key, $delimiter);
+        $this->assertEquals($expected, $array);
+    }
+
+    /**
+     * @test
+     * @dataProvider deleteCustomDelimiterDataProvider
+     *
+     * @param array  $array
+     * @param        $key
+     * @param        $expected
+     * @param string $delimiter
+     *
+     * @return void
+     */
+    public function dotDeleteFunctionCustomDelimiter(array $array, $key, $expected, $delimiter = '~') {
         dotDelete($array, $key, $delimiter);
         $this->assertEquals($expected, $array);
     }
@@ -45,6 +80,19 @@ class DeleteTest extends DotBase {
             'delete a value in mixed set' => [['a' => ['b' => ['c' => 'd', 'e' => 'f', 'g' => ['h' => 'i']]]], 'a.b.e', ['a' => ['b' => ['c' => 'd', 'g' => ['h' => 'i']]]]],
             'delete a array' => [['a' => ['b' => ['c' => 'd']]], 'a.b', ['a' => []]],
             'no key found' => [['a' => ['b' => ['c' => 'd']]], 'a.b.c.e', ['a' => ['b' => ['c' => 'd']]]],
+        ];
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public static function deleteCustomDelimiterDataProvider() {
+        return [
+            'delete a value' => [['a' => ['b' => ['c' => 'd']]], 'a~b~c', ['a' => ['b' => []]]],
+            'delete a value in set' => [['a' => ['b' => ['c' => 'd', 'e' => 'f']]], 'a~b~e', ['a' => ['b' => ['c' => 'd']]]],
+            'delete a value in mixed set' => [['a' => ['b' => ['c' => 'd', 'e' => 'f', 'g' => ['h' => 'i']]]], 'a~b~e', ['a' => ['b' => ['c' => 'd', 'g' => ['h' => 'i']]]]],
+            'delete a array' => [['a' => ['b' => ['c' => 'd']]], 'a~b', ['a' => []]],
+            'no key found' => [['a' => ['b' => ['c' => 'd']]], 'a~b~c~e', ['a' => ['b' => ['c' => 'd']]]],
         ];
     }
 }
