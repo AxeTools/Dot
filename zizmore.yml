@@ -1,0 +1,12 @@
+#
+# zizmor is a static analysis tool for GitHub Actions. It can find and fix many common security issues in typical GitHub Actions CI/CD setups.
+#
+rules:
+    unpinned-uses:
+        config:
+            policies:
+                actions/checkout: ref-pin
+#
+# usage: run this from the project root directory from inside their docker container
+#
+# docker run --rm -v "$(pwd):/workspace" ghcr.io/zizmorcore/zizmor:latest -c /workspace/zizmore.yml -v /workspace/.github/workflows
