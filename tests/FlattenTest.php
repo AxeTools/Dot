@@ -39,8 +39,9 @@ class FlattenTest extends DotBase {
         $actual = Dot::flatten($test, $delimiter);
         $this->assertEquals($expected, $actual);
         $reset = [];
+        $wildcard = $delimiter === Dot::DEFAULT_WILDCARD ? '#' : Dot::DEFAULT_WILDCARD;
         foreach ($actual as $key => $value) {
-            Dot::set($reset, $key, $value, $delimiter);
+            Dot::set($reset, $key, $value, $delimiter, $wildcard);
         }
         $this->assertEquals($test, $reset);
     }
@@ -91,8 +92,9 @@ class FlattenTest extends DotBase {
         $actual = dotFlatten($test, $delimiter);
         $this->assertEquals($expected, $actual);
         $reset = [];
+        $wildcard = $delimiter === Dot::DEFAULT_WILDCARD ? '#' : Dot::DEFAULT_WILDCARD;
         foreach ($actual as $key => $value) {
-            dotSet($reset, $key, $value, $delimiter);
+            dotSet($reset, $key, $value, $delimiter, $wildcard);
         }
         $this->assertEquals($test, $reset);
     }

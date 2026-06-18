@@ -14,6 +14,7 @@ use AxeTools\Utilities\Dot\Dot;
  * @param non-empty-string $searchKey   a string representation of a nested key value delimited by '.' or the passed delimiters
  * @param mixed|null       $default     optional, the default value to return if there is no value set in the key position of the array
  * @param non-empty-string $delimiter   optional, the delimiter used in the string key to break apart the key values
+ * @param non-empty-string $wildcard    optional, the wildcard character to use
  *
  * @return array|mixed|null
  *
@@ -22,9 +23,9 @@ use AxeTools\Utilities\Dot\Dot;
  * @since 1.0.0
  */
 function dotGet(
-    array $searchArray, $searchKey, $default = null, $delimiter = Dot::DEFAULT_DELIMITER
+    array $searchArray, $searchKey, $default = null, $delimiter = Dot::DEFAULT_DELIMITER, $wildcard = Dot::DEFAULT_WILDCARD
 ) {
-    return Dot::get($searchArray, $searchKey, $default, $delimiter);
+    return Dot::get($searchArray, $searchKey, $default, $delimiter, $wildcard);
 }
 
 /**
@@ -35,6 +36,7 @@ function dotGet(
  * @param non-empty-string $setKey    a string representation of a nested key value delimited by '.' or the passed delimiters
  * @param array|mixed|null $value     The value to set in the array at the passed key location
  * @param non-empty-string $delimiter optional, the delimiter used in the string key to break apart the key values
+ * @param non-empty-string $wildcard    optional, the wildcard character to use
  *
  * @return void
  *
@@ -42,8 +44,8 @@ function dotGet(
  *
  * @since 1.0.0
  */
-function dotSet(array &$setArray, $setKey, $value, $delimiter = Dot::DEFAULT_DELIMITER) {
-    Dot::set($setArray, $setKey, $value, $delimiter);
+function dotSet(array &$setArray, $setKey, $value, $delimiter = Dot::DEFAULT_DELIMITER, $wildcard = Dot::DEFAULT_WILDCARD) {
+    Dot::set($setArray, $setKey, $value, $delimiter, $wildcard);
 }
 
 /**
@@ -52,6 +54,7 @@ function dotSet(array &$setArray, $setKey, $value, $delimiter = Dot::DEFAULT_DEL
  * @param mixed[]          $searchArray
  * @param non-empty-string $searchKey   a string representation of a nested key value delimited by '.' or the passed delimiters
  * @param non-empty-string $delimiter   optional, the delimiter used in the string key to break apart the key values
+ * @param non-empty-string $wildcard    optional, the wildcard character to use
  *
  * @return bool
  *
@@ -59,8 +62,8 @@ function dotSet(array &$setArray, $setKey, $value, $delimiter = Dot::DEFAULT_DEL
  *
  * @since 1.0.0
  */
-function dotHas(array $searchArray, $searchKey, $delimiter = Dot::DEFAULT_DELIMITER) {
-    return Dot::has($searchArray, $searchKey, $delimiter);
+function dotHas(array $searchArray, $searchKey, $delimiter = Dot::DEFAULT_DELIMITER, $wildcard = Dot::DEFAULT_WILDCARD) {
+    return Dot::has($searchArray, $searchKey, $delimiter, $wildcard);
 }
 
 /**
@@ -111,6 +114,7 @@ function dotCount(array $countArray, $countKey, $delimiter = Dot::DEFAULT_DELIMI
  * @param mixed[]          $array
  * @param non-empty-string $key
  * @param non-empty-string $delimiter
+ * @param non-empty-string $wildcard
  *
  * @return void
  *
@@ -119,9 +123,10 @@ function dotCount(array $countArray, $countKey, $delimiter = Dot::DEFAULT_DELIMI
 function dotDelete(
     array &$array,
            $key,
-           $delimiter = Dot::DEFAULT_DELIMITER
+           $delimiter = Dot::DEFAULT_DELIMITER,
+           $wildcard = Dot::DEFAULT_WILDCARD
 ) {
-    Dot::delete($array, $key, $delimiter);
+    Dot::delete($array, $key, $delimiter, $wildcard);
 }
 
 /**
